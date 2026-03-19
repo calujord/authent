@@ -124,11 +124,6 @@ class User(AbstractBaseUser, PermissionsMixin):
             return self.avatar.url
         return None
 
-    @property
-    def role(self):
-        """Return 'superuser' if the user is a superuser, otherwise None."""
-        return "superuser" if self.is_superuser else None
-
 
 from .password_reset import PasswordReset  # noqa
 from .session import UserSession  # noqa

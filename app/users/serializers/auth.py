@@ -21,8 +21,8 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token["last_name"] = user.last_name
         token["full_name"] = user.get_full_name()
         token["is_staff"] = user.is_staff
+        token["is_superuser"] = user.is_superuser
         token["email_verified"] = user.email_verified
-        token["role"] = user.role
         token["user_id"] = str(user.id)
 
         return token
@@ -48,8 +48,8 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
                     "last_name": self.user.last_name,
                     "full_name": self.user.get_full_name(),
                     "is_staff": self.user.is_staff,
+                    "is_superuser": self.user.is_superuser,
                     "email_verified": self.user.email_verified,
-                    "role": self.user.role,
                     "date_joined": self.user.date_joined,
                     "last_login": self.user.last_login,
                     "avatar": avatar_url,
@@ -101,7 +101,6 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     full_name = serializers.SerializerMethodField()
     avatar_path = serializers.SerializerMethodField()
-    role = serializers.CharField(read_only=True)
 
     class Meta:
         model = User
@@ -116,7 +115,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
             "gender",
             "avatar_path",
             "email_verified",
-            "role",
+            "is_superuser",
             "date_joined",
             "last_login",
         ]
@@ -124,6 +123,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
             "id",
             "email",
             "email_verified",
+            "is_superuser",
             "date_joined",
             "last_login",
             "avatar_path",
