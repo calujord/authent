@@ -5,7 +5,7 @@ This module contains the Location model for storing geographic points
 and location-based data used across the application.
 """
 
-from django.contrib.gis.db import models
+from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from .base import BaseModel
@@ -30,10 +30,22 @@ class Location(BaseModel):
         help_text=_("Optional description of the location"),
     )
 
-    point = models.PointField(
-        _("Geographic Point"),
-        srid=4326,
-        help_text=_("Geographic coordinates (latitude, longitude)"),
+    latitude = models.DecimalField(
+        _("Latitude"),
+        max_digits=9,
+        decimal_places=6,
+        null=True,
+        blank=True,
+        help_text=_("Latitude coordinate"),
+    )
+
+    longitude = models.DecimalField(
+        _("Longitude"),
+        max_digits=9,
+        decimal_places=6,
+        null=True,
+        blank=True,
+        help_text=_("Longitude coordinate"),
     )
 
     is_active = models.BooleanField(
@@ -57,66 +69,11 @@ class Location(BaseModel):
 
     def __repr__(self):
         """Return detailed representation."""
-        return f"<Location: {self.name} ({self.point.x:.6f}, {self.point.y:.6f})>"
-
-    @property
-    def latitude(self):
-        """Get latitude from point."""
-        return self.point.y if self.point else None
-
-    @property
-    def longitude(self):
-        """Get longitude from point."""
-        return self.point.x if self.point else None
+        return f"<Location: {self.name} ({self.longitude}, {self.latitude})>"
 
     @property
     def coordinates(self):
         """Get coordinates as tuple (longitude, latitude)."""
-        if self.point:
-            return (self.point.x, self.point.y)
+        if self.latitude is not None and self.longitude is not None:
+            return (float(self.longitude), float(self.latitude))
         return None
-
-    def get_distance_to(self, other_point):
-        """
-        Calculate distance to another point.
-
-        Args:
-            other_point: Another Point object or Location instance
-
-        Returns:
-            Distance object with the distance between points
-        """
-        from django.contrib.gis.measure import Distance
-
-        if hasattr(other_point, "point"):
-            other_point = other_point.point
-
-        return Distance(
-            m=self.point.distance(other_point) * 111319.9
-        )  # Convert to meters
-
-    @classmethod
-    def find_nearby(cls, point, radius_km=10):
-        """
-        Find locations within a given radius.
-
-        Args:
-            point: Point object or tuple (longitude, latitude)
-            radius_km: Radius in kilometers (default: 10)
-
-        Returns:
-            QuerySet of nearby locations
-        """
-        from django.contrib.gis.geos import Point
-        from django.contrib.gis.measure import D
-
-        if not isinstance(point, Point):
-            point = Point(point[0], point[1], srid=4326)
-
-        return (
-            cls.objects.filter(
-                point__distance_lte=(point, D(km=radius_km)), is_active=True
-            )
-            .annotate(distance=models.Distance("point", point))
-            .order_by("distance")
-        )
