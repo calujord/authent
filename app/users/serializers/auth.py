@@ -112,14 +112,14 @@ class UserProfileSerializer(serializers.ModelSerializer):
             "phone_number",
             "gender",
             "avatar_path",
-            "is_verified",
+            "email_verified",
             "date_joined",
             "last_login",
         ]
         read_only_fields = [
             "id",
             "email",
-            "is_verified",
+            "email_verified",
             "date_joined",
             "last_login",
             "avatar_path",
