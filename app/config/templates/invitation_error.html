@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Error - Invitación Atlas</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+    <style>{% include 'invitation_styles.html' %}</style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="error-header">
+        <span class="material-icons error-icon">warning</span>
+        <h1>Invitación No Válida</h1>
+        <p>No se puede procesar esta invitación</p>
+      </div>
+
+      <div class="content">
+        <div class="error-message-box">{{ error }}</div>
+
+        <div class="help-text-center">
+          Si crees que esto es un error, por favor contacta con la persona que
+          te envió la invitación para que te envíe una nueva.
+        </div>
+
+        <div class="contact-box">
+          <h3><span class="material-icons" style="font-size: 20px; vertical-align: middle;">help_outline</span> ¿Necesitas ayuda?</h3>
+          <p>
+            Si tienes problemas con tu invitación, contacta con el administrador
+            de tu organización o con el soporte de Atlas.
+          </p>
+        </div>
+      </div>
+
+      <div class="footer">
+        &copy; 2026 Atlas. Todos los derechos reservados.
+      </div>
+    </div>
+  </body>
+</html>

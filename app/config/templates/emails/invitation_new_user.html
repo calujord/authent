@@ -1,0 +1,125 @@
+{% extends "emails/base.html" %}
+{% load i18n %}
+
+{% block title %}Welcome! Create your account to join {{ businesses.0.name }}{% if businesses|length > 1 %} and others{% endif %}{% endblock %}
+
+{% block tagline %}{% blocktrans %}Team Collaboration Platform{% endblocktrans %}{% endblock %}
+
+{% block content %}
+<h1>🎉 {% blocktrans %}Welcome! You have been invited{% endblocktrans %}</h1>
+
+<p>{% blocktrans %}Hello,{% endblocktrans %}</p>
+
+<p>
+  {% if invited_by %}
+  <strong>{{ invited_by.get_full_name }}</strong>
+  {% else %}
+  {% blocktrans %}The team{% endblocktrans %}
+  {% endif %}
+  {% blocktrans %}has invited you to join as{% endblocktrans %}
+  <strong>{{ role_display }}</strong>
+  {% blocktrans %}in{% endblocktrans %}
+  {% if branches_count == 1 %}
+  {% blocktrans %}the following location:{% endblocktrans %}
+  {% else %}
+  <strong>{{ branches_count }}</strong>
+  {% blocktrans %}locations:{% endblocktrans %}
+  {% endif %}
+</p>
+
+<div class="info-box">
+  {% for branch in branches %}
+  <div style="{% if not forloop.last %}margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #e1e8ed;{% endif %}">
+    <p style="margin: 5px 0">
+      <strong>🏢 {% blocktrans %}Business:{% endblocktrans %}</strong> {{ branch.business.name }}
+    </p>
+    <p style="margin: 5px 0">
+      <strong>📍 {% blocktrans %}Branch:{% endblocktrans %}</strong> {{ branch.name }}
+    </p>
+    {% if branch.city %}
+    <p style="margin: 5px 0">
+      <strong>📌 {% blocktrans %}Location:{% endblocktrans %}</strong> {{ branch.city }}{% if branch.state %}, {{ branch.state }}{% endif %}
+    </p>
+    {% endif %}
+  </div>
+  {% endfor %}
+  <p style="margin: 15px 0 8px 0">
+    <strong>👤 {% blocktrans %}Role:{% endblocktrans %}</strong> {{ role_display }}
+  </p>
+</div>
+
+{% if invitation.message %}
+<div class="warning-box" style="background-color: #fff3cd; border-color: #ffc107; color: #856404">
+  <p style="margin: 0">
+    <strong>💬 {% blocktrans %}Personal message:{% endblocktrans %}</strong>
+  </p>
+  <p style="margin: 10px 0 0 0; font-style: italic">{{ invitation.message }}</p>
+</div>
+{% endif %}
+
+<div style="background-color: #e3f2fd; padding: 20px; border-radius: 8px; border-left: 4px solid #2196f3; margin: 25px 0;">
+  <h2 style="margin: 0 0 15px 0; color: #1976d2; font-size: 18px">
+    📝 {% blocktrans %}Create your account first{% endblocktrans %}
+  </h2>
+  <p style="margin: 0 0 10px 0; color: #1565c0">
+    {% blocktrans %}Since you are new to our platform, you will need to create an account to accept this invitation.{% endblocktrans %}
+  </p>
+  <p style="margin: 0; color: #1565c0; font-size: 14px">
+    ✅ {% blocktrans %}Do not worry, the invitation will be automatically accepted after you complete the registration!{% endblocktrans %}
+  </p>
+</div>
+
+<div style="text-align: center; margin: 30px 0">
+  <a href="{{ invitation_url }}" class="button" style="font-size: 16px; padding: 15px 30px">
+    🚀 {% blocktrans %}Create Account and Join{% endblocktrans %}
+  </a>
+</div>
+
+<p style="text-align: center; font-size: 14px; color: #2196f3; margin: 10px 0">
+  ⚡ {% blocktrans %}Quick signup: You will join all locations automatically{% endblocktrans %}
+</p>
+
+<div style="background-color: #f5f5f5; padding: 15px; border-radius: 4px; margin: 25px 0;">
+  <p style="margin: 0 0 10px 0; font-weight: bold; color: #333">
+    📋 {% blocktrans %}What happens next:{% endblocktrans %}
+  </p>
+  <ol style="margin: 0; padding-left: 20px; color: #555">
+    <li style="margin: 5px 0">{% blocktrans %}Fill out a quick registration form{% endblocktrans %}</li>
+    <li style="margin: 5px 0">{% blocktrans %}Your account will be created automatically{% endblocktrans %}</li>
+    <li style="margin: 5px 0">{% if branches_count == 1 %}{% blocktrans %}You will be added to the location{% endblocktrans %}{% else %}{% blocktrans %}You will be added to all{% endblocktrans %} {{ branches_count }} {% blocktrans %}locations{% endblocktrans %}{% endif %}</li>
+    <li style="margin: 5px 0">{% blocktrans %}Start working with your team immediately!{% endblocktrans %}</li>
+  </ol>
+</div>
+
+<p style="font-size: 14px; color: #7f8c8d; margin-top: 25px">
+  {% blocktrans %}Or copy and paste this link in your browser:{% endblocktrans %}
+</p>
+<p style="word-break: break-all; font-size: 12px; color: #7f8c8d; background-color: #f8f9fa; padding: 10px; border-radius: 4px;">
+  {{ invitation_url }}
+</p>
+
+<div class="warning-box">
+  <p style="margin: 0; color: #e74c3c">
+    ⚠️ {% blocktrans %}This invitation expires on{% endblocktrans %} {{ invitation.expires_at|date:"SHORT_DATE_FORMAT" }} {% blocktrans %}at{% endblocktrans %} {{ invitation.expires_at|time:"H:i" }}
+  </p>
+</div>
+
+<div style="background-color: #e8f5e9; padding: 15px; border-radius: 4px; border-left: 4px solid #4caf50; margin-top: 20px;">
+  <p style="margin: 0; color: #2e7d32; font-size: 14px">
+    ℹ️ <strong>{% blocktrans %}Note:{% endblocktrans %}</strong>
+    {% blocktrans %}After registration, you will be assigned as a member to{% endblocktrans %}
+    {% if branches_count == 1 %}{% blocktrans %}this location{% endblocktrans %}{% else %}{% blocktrans %}all these locations{% endblocktrans %}{% endif %}
+    {% blocktrans %}with the collaborator group for cross-branch access.{% endblocktrans %}
+  </p>
+</div>
+
+<p style="margin-top: 30px; color: #7f8c8d; font-size: 14px">
+  {% blocktrans %}If you were not expecting this invitation, you can safely ignore this email.{% endblocktrans %}
+</p>
+{% endblock %}
+
+{% block footer_text %}
+{% blocktrans %}This is an automated email, please do not reply to this message.{% endblocktrans %}
+<br />
+&copy; {% for business in businesses %}{{ business.name }}{% if not forloop.last %}, {% endif %}{% endfor %} - {% blocktrans %}All rights reserved{% endblocktrans %}
+{% endblock %}

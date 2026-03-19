@@ -1,0 +1,654 @@
+{% extends "users/public/base.html" %}
+
+{% block meta_description %}Política de Privacidad de Atlas, plataforma de gestión empresarial de Atlas Care.{% endblock %}
+
+{% block og_description %}Política de Privacidad de Atlas, plataforma de gestión empresarial.{% endblock %}
+
+{% block twitter_description %}Política de Privacidad de Atlas, plataforma de gestión empresarial.{% endblock %}
+
+{% block content %}
+    {% if language == 'es' %}
+        <h1>Política de Privacidad</h1>
+    {% elif language == 'en' %}
+        <h1>Privacy Policy</h1>
+    {% elif language == 'pt' %}
+        <h1>Política de Privacidade</h1>
+    {% elif language == 'fr' %}
+        <h1>Politique de Confidentialité</h1>
+    {% elif language == 'it' %}
+        <h1>Politica sulla Privacy</h1>
+    {% else %}
+        <h1>Política de Privacidad</h1>
+    {% endif %}
+
+    {% if privacy %}
+        <div class="meta-info">
+            {% if language == 'es' %}
+                <h3><span class="material-icons">info</span> Información del Documento</h3>
+                <p><span class="material-icons">tag</span> <strong>Versión:</strong> {{ privacy.version }}</p>
+                <p><span class="material-icons">calendar_today</span> <strong>Fecha de entrada en vigor:</strong> {{ privacy.created_at|date:"d/m/Y" }}</p>
+                <p><span class="material-icons">update</span> <strong>Última actualización:</strong> {{ privacy.updated_at|date:"d/m/Y" }}</p>
+            {% elif language == 'en' %}
+                <h3><span class="material-icons">info</span> Document Information</h3>
+                <p><span class="material-icons">tag</span> <strong>Version:</strong> {{ privacy.version }}</p>
+                <p><span class="material-icons">calendar_today</span> <strong>Effective date:</strong> {{ privacy.created_at|date:"m/d/Y" }}</p>
+                <p><span class="material-icons">update</span> <strong>Last updated:</strong> {{ privacy.updated_at|date:"m/d/Y" }}</p>
+            {% elif language == 'pt' %}
+                <h3><span class="material-icons">info</span> Informações do Documento</h3>
+                <p><span class="material-icons">tag</span> <strong>Versão:</strong> {{ privacy.version }}</p>
+                <p><span class="material-icons">calendar_today</span> <strong>Data de vigência:</strong> {{ privacy.created_at|date:"d/m/Y" }}</p>
+                <p><span class="material-icons">update</span> <strong>Última atualização:</strong> {{ privacy.updated_at|date:"d/m/Y" }}</p>
+            {% elif language == 'fr' %}
+                <h3><span class="material-icons">info</span> Informations du Document</h3>
+                <p><span class="material-icons">tag</span> <strong>Version :</strong> {{ privacy.version }}</p>
+                <p><span class="material-icons">calendar_today</span> <strong>Date d'entrée en vigueur :</strong> {{ privacy.created_at|date:"d/m/Y" }}</p>
+                <p><span class="material-icons">update</span> <strong>Dernière mise à jour :</strong> {{ privacy.updated_at|date:"d/m/Y" }}</p>
+            {% elif language == 'it' %}
+                <h3><span class="material-icons">info</span> Informazioni del Documento</h3>
+                <p><span class="material-icons">tag</span> <strong>Versione:</strong> {{ privacy.version }}</p>
+                <p><span class="material-icons">calendar_today</span> <strong>Data di entrata in vigore:</strong> {{ privacy.created_at|date:"d/m/Y" }}</p>
+                <p><span class="material-icons">update</span> <strong>Ultimo aggiornamento:</strong> {{ privacy.updated_at|date:"d/m/Y" }}</p>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <!-- Content from database if available -->
+    {% if content %}
+        <div class="content-section">
+            {{ content|safe }}
+        </div>
+    {% endif %}
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- COMPREHENSIVE PRIVACY POLICY (always visible as fallback/base) -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+
+    <!-- 1. Introduction -->
+    <div class="feature-section">
+        {% if language == 'en' %}
+            <h3><span class="material-icons">medical_services</span> About Atlas</h3>
+            <p>Atlas (the "App") is a pediatric business management platform developed by <strong>Atlas Care</strong>. It provides tools for businesses to manage patients, appointments, treatments, and to analyze images using artificial intelligence. This privacy policy describes what data we collect, why we collect it, how we use it, and your rights regarding your personal information.</p>
+            <p><strong>Last updated:</strong> March 5, 2026</p>
+        {% elif language == 'pt' %}
+            <h3><span class="material-icons">medical_services</span> Sobre o Atlas</h3>
+            <p>Atlas (o "Aplicativo") é uma plataforma de gestão odontológica pediátrica desenvolvida pela <strong>Atlas Care</strong>. Fornece ferramentas para clínicas odontológicas gerenciarem pacientes, consultas, tratamentos e analisarem imagens dentais usando inteligência artificial. Esta política de privacidade descreve quais dados coletamos, por que os coletamos, como os utilizamos e seus direitos em relação às suas informações pessoais.</p>
+            <p><strong>Última atualização:</strong> 5 de março de 2026</p>
+        {% elif language == 'fr' %}
+            <h3><span class="material-icons">medical_services</span> À propos de Atlas</h3>
+            <p>Atlas (l'"Application") est une plateforme de gestion dentaire pédiatrique développée par <strong>Atlas Care</strong>. Elle fournit des outils pour les cliniques dentaires afin de gérer les patients, les rendez-vous, les traitements et d'analyser les images dentaires à l'aide de l'intelligence artificielle. Cette politique de confidentialité décrit quelles données nous collectons, pourquoi nous les collectons, comment nous les utilisons et vos droits concernant vos informations personnelles.</p>
+            <p><strong>Dernière mise à jour :</strong> 5 mars 2026</p>
+        {% elif language == 'it' %}
+            <h3><span class="material-icons">medical_services</span> Informazioni su Atlas</h3>
+            <p>Atlas (l'"App") è una piattaforma di gestione aziendale sviluppata da <strong>Atlas Care</strong>. Fornisce strumenti per aziende per gestire pazienti, appuntamenti, trattamenti e per analizzare immagini utilizzando l'intelligenza artificiale. Questa politica sulla privacy descrive quali dati raccogliamo, perché li raccogliamo, come li utilizziamo e i vostri diritti riguardo alle vostre informazioni personali.</p>
+            <p><strong>Ultimo aggiornamento:</strong> 5 marzo 2026</p>
+        {% else %}
+            <h3><span class="material-icons">medical_services</span> Acerca de Atlas</h3>
+            <p>Atlas (la "App") es una plataforma especializada en gestión empresarial pediátrica desarrollada por <strong>Atlas Care</strong>. Proporciona herramientas para negocios para gestionar pacientes, citas, tratamientos y analizar imágenes mediante inteligencia artificial. Esta política de privacidad describe qué datos recopilamos, por qué los recopilamos, cómo los utilizamos y sus derechos respecto a su información personal.</p>
+            <p><strong>Última actualización:</strong> 5 de marzo de 2026</p>
+        {% endif %}
+    </div>
+
+    <!-- 2. Data We Collect -->
+    <div class="feature-section">
+        {% if language == 'en' %}
+            <h3><span class="material-icons">database</span> Information We Collect</h3>
+            <h4>2.1 Account and Registration Data</h4>
+            <ul class="feature-list">
+                <li><span class="material-icons">person</span> Full name, email address, phone number</li>
+                <li><span class="material-icons">local_hospital</span> Clinic name, professional license number</li>
+                <li><span class="material-icons">badge</span> Professional role (dentist, assistant, administrator)</li>
+                <li><span class="material-icons">receipt_long</span> Fiscal/billing information</li>
+            </ul>
+            <h4>2.2 Patient Medical Data</h4>
+            <ul class="feature-list">
+                <li><span class="material-icons">child_care</span> Patient name, date of birth, medical history</li>
+                <li><span class="material-icons">medical_information</span> Dental treatment records and diagnoses</li>
+                <li><span class="material-icons">medication</span> Prescriptions and medication records</li>
+                <li><span class="material-icons">monitor_heart</span> Health evaluations and clinical notes</li>
+            </ul>
+            <h4>2.3 Images and Camera</h4>
+            <p>Our app requests <strong>camera permission</strong> to allow dental professionals to:</p>
+            <ul class="feature-list">
+                <li><span class="material-icons">photo_camera</span> <strong>Capture clinical documents</strong> of patients for treatment records</li>
+                <li><span class="material-icons">panorama</span> <strong>Photograph panoramic X-rays/radiographs</strong> for AI-powered dental analysis</li>
+                <li><span class="material-icons">add_a_photo</span> <strong>Upload profile photos</strong> for user accounts</li>
+            </ul>
+            <p>All images captured are stored securely and associated with the corresponding patient record. Images of radiographs may be processed by our AI system to assist in business analytics. <strong>Camera access is only used when explicitly initiated by the user.</strong></p>
+            <h4>2.4 Location Data</h4>
+            <ul class="feature-list">
+                <li><span class="material-icons">location_on</span> Clinic address for registration and service purposes</li>
+                <li><span class="material-icons">my_location</span> Approximate location may be inferred from IP address for security and fraud prevention</li>
+            </ul>
+            <h4>2.5 Device and Technical Data</h4>
+            <ul class="feature-list">
+                <li><span class="material-icons">devices</span> Device type, operating system, app version</li>
+                <li><span class="material-icons">wifi</span> IP address, browser information</li>
+                <li><span class="material-icons">analytics</span> App usage patterns and crash reports</li>
+            </ul>
+        {% elif language == 'pt' %}
+            <h3><span class="material-icons">database</span> Informações que Coletamos</h3>
+            <h4>2.1 Dados de Conta e Registro</h4>
+            <ul class="feature-list">
+                <li><span class="material-icons">person</span> Nome completo, endereço de e-mail, número de telefone</li>
+                <li><span class="material-icons">local_hospital</span> Nome da clínica, número de licença profissional</li>
+                <li><span class="material-icons">badge</span> Função profissional (dentista, assistente, administrador)</li>
+                <li><span class="material-icons">receipt_long</span> Informações fiscais/de faturamento</li>
+            </ul>
+            <h4>2.2 Dados Médicos do Paciente</h4>
+            <ul class="feature-list">
+                <li><span class="material-icons">child_care</span> Nome do paciente, data de nascimento, histórico médico</li>
+                <li><span class="material-icons">medical_information</span> Registros de tratamento empresarial</li>
+                <li><span class="material-icons">medication</span> Prescrições e registros de medicamentos</li>
+                <li><span class="material-icons">monitor_heart</span> Avaliações de saúde e notas clínicas</li>
+            </ul>
+            <h4>2.3 Imagens e Câmera</h4>
+            <p>Nosso aplicativo solicita <strong>permissão de câmera</strong> para permitir que profissionais dentais:</p>
+            <ul class="feature-list">
+                <li><span class="material-icons">photo_camera</span> <strong>Capturem fotografias clínicas dentais</strong> dos pacientes para registros de tratamento</li>
+                <li><span class="material-icons">panorama</span> <strong>Fotografem radiografias panorâmicas</strong> para análise dental por IA</li>
+                <li><span class="material-icons">add_a_photo</span> <strong>Enviem fotos de perfil</strong> para contas de usuário</li>
+            </ul>
+            <p>Todas as imagens capturadas são armazenadas com segurança e associadas ao registro do paciente correspondente. Imagens de radiografias podem ser processadas pelo nosso sistema de IA para auxiliar no diagnóstico dental. <strong>O acesso à câmera é utilizado apenas quando explicitamente iniciado pelo usuário.</strong></p>
+            <h4>2.4 Dados de Localização</h4>
+            <ul class="feature-list">
+                <li><span class="material-icons">location_on</span> Endereço da clínica para fins de registro e serviço</li>
+                <li><span class="material-icons">my_location</span> A localização aproximada pode ser inferida do endereço IP para segurança e prevenção de fraudes</li>
+            </ul>
+            <h4>2.5 Dados do Dispositivo e Técnicos</h4>
+            <ul class="feature-list">
+                <li><span class="material-icons">devices</span> Tipo de dispositivo, sistema operacional, versão do aplicativo</li>
+                <li><span class="material-icons">wifi</span> Endereço IP, informações do navegador</li>
+                <li><span class="material-icons">analytics</span> Padrões de uso do aplicativo e relatórios de falhas</li>
+            </ul>
+        {% elif language == 'fr' %}
+            <h3><span class="material-icons">database</span> Informations que Nous Collectons</h3>
+            <h4>2.1 Données de Compte et d'Inscription</h4>
+            <ul class="feature-list">
+                <li><span class="material-icons">person</span> Nom complet, adresse e-mail, numéro de téléphone</li>
+                <li><span class="material-icons">local_hospital</span> Nom de la clinique, numéro de licence professionnelle</li>
+                <li><span class="material-icons">badge</span> Rôle professionnel (dentiste, assistant, administrateur)</li>
+                <li><span class="material-icons">receipt_long</span> Informations fiscales/de facturation</li>
+            </ul>
+            <h4>2.2 Données Médicales du Patient</h4>
+            <ul class="feature-list">
+                <li><span class="material-icons">child_care</span> Nom du patient, date de naissance, antécédents médicaux</li>
+                <li><span class="material-icons">medical_information</span> Dossiers de traitement dentaire et diagnostics</li>
+                <li><span class="material-icons">medication</span> Ordonnances et registres de médicaments</li>
+                <li><span class="material-icons">monitor_heart</span> Évaluations de santé et notes cliniques</li>
+            </ul>
+            <h4>2.3 Images et Caméra</h4>
+            <p>Notre application demande l'<strong>autorisation de caméra</strong> pour permettre aux professionnels dentaires de :</p>
+            <ul class="feature-list">
+                <li><span class="material-icons">photo_camera</span> <strong>Capturer des photographies cliniques dentaires</strong> des patients pour les dossiers de traitement</li>
+                <li><span class="material-icons">panorama</span> <strong>Photographier des radiographies panoramiques</strong> pour une analyse dentaire par IA</li>
+                <li><span class="material-icons">add_a_photo</span> <strong>Télécharger des photos de profil</strong> pour les comptes utilisateurs</li>
+            </ul>
+            <p>Toutes les images capturées sont stockées de manière sécurisée et associées au dossier patient correspondant. Les images de radiographies peuvent être traitées par notre système d'IA pour aider au diagnostic dentaire. <strong>L'accès à la caméra n'est utilisé que lorsqu'il est explicitement initié par l'utilisateur.</strong></p>
+            <h4>2.4 Données de Localisation</h4>
+            <ul class="feature-list">
+                <li><span class="material-icons">location_on</span> Adresse de la clinique à des fins d'inscription et de service</li>
+                <li><span class="material-icons">my_location</span> La localisation approximative peut être déduite de l'adresse IP pour la sécurité et la prévention de la fraude</li>
+            </ul>
+            <h4>2.5 Données de l'Appareil et Techniques</h4>
+            <ul class="feature-list">
+                <li><span class="material-icons">devices</span> Type d'appareil, système d'exploitation, version de l'application</li>
+                <li><span class="material-icons">wifi</span> Adresse IP, informations du navigateur</li>
+                <li><span class="material-icons">analytics</span> Modèles d'utilisation de l'application et rapports de plantage</li>
+            </ul>
+        {% elif language == 'it' %}
+            <h3><span class="material-icons">database</span> Informazioni che Raccogliamo</h3>
+            <h4>2.1 Dati di Account e Registrazione</h4>
+            <ul class="feature-list">
+                <li><span class="material-icons">person</span> Nome completo, indirizzo e-mail, numero di telefono</li>
+                <li><span class="material-icons">local_hospital</span> Nome della clinica, numero di licenza professionale</li>
+                <li><span class="material-icons">badge</span> Ruolo professionale (dentista, assistente, amministratore)</li>
+                <li><span class="material-icons">receipt_long</span> Informazioni fiscali/di fatturazione</li>
+            </ul>
+            <h4>2.2 Dati Medici del Paziente</h4>
+            <ul class="feature-list">
+                <li><span class="material-icons">child_care</span> Nome del paziente, data di nascita, storia clinica</li>
+                <li><span class="material-icons">medical_information</span> Registri di trattamento dentale e diagnosi</li>
+                <li><span class="material-icons">medication</span> Prescrizioni e registri di farmaci</li>
+                <li><span class="material-icons">monitor_heart</span> Valutazioni sanitarie e note cliniche</li>
+            </ul>
+            <h4>2.3 Immagini e Fotocamera</h4>
+            <p>La nostra app richiede il <strong>permesso della fotocamera</strong> per consentire ai professionisti dentali di:</p>
+            <ul class="feature-list">
+                <li><span class="material-icons">photo_camera</span> <strong>Catturare fotografie aziende</strong> dei pazienti per i registri di trattamento</li>
+                <li><span class="material-icons">panorama</span> <strong>Fotografare radiografie panoramiche</strong> per l'analisi dentale con IA</li>
+                <li><span class="material-icons">add_a_photo</span> <strong>Caricare foto del profilo</strong> per gli account utente</li>
+            </ul>
+            <p>Tutte le immagini catturate sono archiviate in modo sicuro e associate al corrispondente registro del paziente. Le immagini delle radiografie possono essere elaborate dal nostro sistema di IA per assistere nella diagnostica dentale. <strong>L'accesso alla fotocamera viene utilizzato solo quando esplicitamente avviato dall'utente.</strong></p>
+            <h4>2.4 Dati di Localizzazione</h4>
+            <ul class="feature-list">
+                <li><span class="material-icons">location_on</span> Indirizzo della clinica per scopi di registrazione e servizio</li>
+                <li><span class="material-icons">my_location</span> La posizione approssimativa può essere dedotta dall'indirizzo IP per sicurezza e prevenzione delle frodi</li>
+            </ul>
+            <h4>2.5 Dati del Dispositivo e Tecnici</h4>
+            <ul class="feature-list">
+                <li><span class="material-icons">devices</span> Tipo di dispositivo, sistema operativo, versione dell'app</li>
+                <li><span class="material-icons">wifi</span> Indirizzo IP, informazioni del browser</li>
+                <li><span class="material-icons">analytics</span> Modelli di utilizzo dell'app e report sugli arresti anomali</li>
+            </ul>
+        {% else %}
+            <h3><span class="material-icons">database</span> Información que Recopilamos</h3>
+            <h4>2.1 Datos de Cuenta y Registro</h4>
+            <ul class="feature-list">
+                <li><span class="material-icons">person</span> Nombre completo, dirección de correo electrónico, número de teléfono</li>
+                <li><span class="material-icons">local_hospital</span> Nombre de la clínica, número de licencia profesional</li>
+                <li><span class="material-icons">badge</span> Rol profesional (dentista, asistente, administrador)</li>
+                <li><span class="material-icons">receipt_long</span> Información fiscal/de facturación</li>
+            </ul>
+            <h4>2.2 Datos Médicos del Paciente</h4>
+            <ul class="feature-list">
+                <li><span class="material-icons">child_care</span> Nombre del paciente, fecha de nacimiento, historial médico</li>
+                <li><span class="material-icons">medical_information</span> Registros de tratamientos dentales y diagnósticos</li>
+                <li><span class="material-icons">medication</span> Prescripciones y registros de medicamentos</li>
+                <li><span class="material-icons">monitor_heart</span> Evaluaciones de salud y notas clínicas</li>
+            </ul>
+            <h4>2.3 Imágenes y Cámara</h4>
+            <p>Nuestra app solicita <strong>permiso de cámara</strong> para permitir a los profesionales dentales:</p>
+            <ul class="feature-list">
+                <li><span class="material-icons">photo_camera</span> <strong>Capturar fotografías negocios</strong> de los pacientes para registros de tratamiento</li>
+                <li><span class="material-icons">panorama</span> <strong>Fotografiar radiografías panorámicas</strong> para análisis dental con IA</li>
+                <li><span class="material-icons">add_a_photo</span> <strong>Subir fotos de perfil</strong> para cuentas de usuario</li>
+            </ul>
+            <p>Todas las imágenes capturadas se almacenan de forma segura y se asocian al registro del paciente correspondiente. Las imágenes de radiografías pueden ser procesadas por nuestro sistema de IA para asistir en el diagnóstico dental. <strong>El acceso a la cámara solo se utiliza cuando es iniciado explícitamente por el usuario.</strong></p>
+            <h4>2.4 Datos de Ubicación</h4>
+            <ul class="feature-list">
+                <li><span class="material-icons">location_on</span> Dirección de la clínica para fines de registro y servicio</li>
+                <li><span class="material-icons">my_location</span> La ubicación aproximada puede inferirse de la dirección IP para seguridad y prevención de fraude</li>
+            </ul>
+            <h4>2.5 Datos del Dispositivo y Técnicos</h4>
+            <ul class="feature-list">
+                <li><span class="material-icons">devices</span> Tipo de dispositivo, sistema operativo, versión de la app</li>
+                <li><span class="material-icons">wifi</span> Dirección IP, información del navegador</li>
+                <li><span class="material-icons">analytics</span> Patrones de uso de la app e informes de fallos</li>
+            </ul>
+        {% endif %}
+    </div>
+
+    <!-- 3. How We Use Your Data -->
+    <div class="feature-section">
+        {% if language == 'en' %}
+            <h3><span class="material-icons">settings</span> How We Use Your Information</h3>
+            <ul class="feature-list">
+                <li><span class="material-icons">local_hospital</span> <strong>Provide dental services:</strong> Manage patients, appointments, and treatment records</li>
+                <li><span class="material-icons">smart_toy</span> <strong>AI-powered analysis:</strong> Process dental radiographs to assist in diagnostics (anomaly detection, pre-diagnoses)</li>
+                <li><span class="material-icons">notifications</span> <strong>Communications:</strong> Send appointment reminders, treatment updates, and service notifications</li>
+                <li><span class="material-icons">security</span> <strong>Security:</strong> Protect accounts, prevent fraud, and ensure platform integrity</li>
+                <li><span class="material-icons">insights</span> <strong>Improvements:</strong> Analyze usage patterns to improve the platform and AI models</li>
+                <li><span class="material-icons">receipt</span> <strong>Billing:</strong> Process subscriptions and generate invoices</li>
+            </ul>
+        {% elif language == 'pt' %}
+            <h3><span class="material-icons">settings</span> Como Usamos Suas Informações</h3>
+            <ul class="feature-list">
+                <li><span class="material-icons">local_hospital</span> <strong>Fornecer serviços dentais:</strong> Gerenciar pacientes, consultas e registros de tratamento</li>
+                <li><span class="material-icons">smart_toy</span> <strong>Análise por IA:</strong> Processar radiografias dentais para auxiliar em diagnósticos</li>
+                <li><span class="material-icons">notifications</span> <strong>Comunicações:</strong> Enviar lembretes de consultas e notificações de serviço</li>
+                <li><span class="material-icons">security</span> <strong>Segurança:</strong> Proteger contas, prevenir fraudes e garantir a integridade da plataforma</li>
+                <li><span class="material-icons">insights</span> <strong>Melhorias:</strong> Analisar padrões de uso para melhorar a plataforma e os modelos de IA</li>
+                <li><span class="material-icons">receipt</span> <strong>Faturamento:</strong> Processar assinaturas e gerar faturas</li>
+            </ul>
+        {% elif language == 'fr' %}
+            <h3><span class="material-icons">settings</span> Comment Nous Utilisons Vos Informations</h3>
+            <ul class="feature-list">
+                <li><span class="material-icons">local_hospital</span> <strong>Fournir des services dentaires :</strong> Gérer les patients, les rendez-vous et les dossiers de traitement</li>
+                <li><span class="material-icons">smart_toy</span> <strong>Analyse par IA :</strong> Traiter les radiographies dentaires pour aider aux diagnostics</li>
+                <li><span class="material-icons">notifications</span> <strong>Communications :</strong> Envoyer des rappels de rendez-vous et des notifications de service</li>
+                <li><span class="material-icons">security</span> <strong>Sécurité :</strong> Protéger les comptes, prévenir les fraudes et assurer l'intégrité de la plateforme</li>
+                <li><span class="material-icons">insights</span> <strong>Améliorations :</strong> Analyser les modèles d'utilisation pour améliorer la plateforme et les modèles d'IA</li>
+                <li><span class="material-icons">receipt</span> <strong>Facturation :</strong> Traiter les abonnements et générer les factures</li>
+            </ul>
+        {% elif language == 'it' %}
+            <h3><span class="material-icons">settings</span> Come Utilizziamo le Vostre Informazioni</h3>
+            <ul class="feature-list">
+                <li><span class="material-icons">local_hospital</span> <strong>Fornire servizi dentali:</strong> Gestire pazienti, appuntamenti e registri di trattamento</li>
+                <li><span class="material-icons">smart_toy</span> <strong>Analisi con IA:</strong> Elaborare radiografie dentali per assistere nella diagnostica</li>
+                <li><span class="material-icons">notifications</span> <strong>Comunicazioni:</strong> Inviare promemoria per appuntamenti e notifiche di servizio</li>
+                <li><span class="material-icons">security</span> <strong>Sicurezza:</strong> Proteggere gli account, prevenire le frodi e garantire l'integrità della piattaforma</li>
+                <li><span class="material-icons">insights</span> <strong>Miglioramenti:</strong> Analizzare i modelli di utilizzo per migliorare la piattaforma e i modelli di IA</li>
+                <li><span class="material-icons">receipt</span> <strong>Fatturazione:</strong> Elaborare abbonamenti e generare fatture</li>
+            </ul>
+        {% else %}
+            <h3><span class="material-icons">settings</span> Cómo Usamos su Información</h3>
+            <ul class="feature-list">
+                <li><span class="material-icons">local_hospital</span> <strong>Prestar servicios dentales:</strong> Gestionar pacientes, citas y registros de tratamiento</li>
+                <li><span class="material-icons">smart_toy</span> <strong>Análisis con IA:</strong> Procesar radiografías dentales para asistir en diagnósticos (detección de anomalías, pre-diagnósticos)</li>
+                <li><span class="material-icons">notifications</span> <strong>Comunicaciones:</strong> Enviar recordatorios de citas, actualizaciones de tratamiento y notificaciones del servicio</li>
+                <li><span class="material-icons">security</span> <strong>Seguridad:</strong> Proteger cuentas, prevenir fraudes y asegurar la integridad de la plataforma</li>
+                <li><span class="material-icons">insights</span> <strong>Mejoras:</strong> Analizar patrones de uso para mejorar la plataforma y los modelos de IA</li>
+                <li><span class="material-icons">receipt</span> <strong>Facturación:</strong> Procesar suscripciones y generar facturas</li>
+            </ul>
+        {% endif %}
+    </div>
+
+    <!-- 4. Data Sharing -->
+    <div class="feature-section">
+        {% if language == 'en' %}
+            <h3><span class="material-icons">share</span> Data Sharing and Third Parties</h3>
+            <p>We do <strong>not sell</strong> your personal data. We may share data with:</p>
+            <ul class="feature-list">
+                <li><span class="material-icons">cloud</span> <strong>Cloud hosting providers</strong> (servers, storage) to operate the platform</li>
+                <li><span class="material-icons">smart_toy</span> <strong>AI processing services</strong> for radiograph analysis (images are processed securely and not retained by third parties)</li>
+                <li><span class="material-icons">payment</span> <strong>Payment processors</strong> for subscription billing</li>
+                <li><span class="material-icons">gavel</span> <strong>Legal authorities</strong> when required by law</li>
+            </ul>
+        {% elif language == 'pt' %}
+            <h3><span class="material-icons">share</span> Compartilhamento de Dados e Terceiros</h3>
+            <p>Nós <strong>não vendemos</strong> seus dados pessoais. Podemos compartilhar dados com:</p>
+            <ul class="feature-list">
+                <li><span class="material-icons">cloud</span> <strong>Provedores de hospedagem em nuvem</strong> (servidores, armazenamento) para operar a plataforma</li>
+                <li><span class="material-icons">smart_toy</span> <strong>Serviços de processamento de IA</strong> para análise de radiografias (as imagens são processadas com segurança e não retidas por terceiros)</li>
+                <li><span class="material-icons">payment</span> <strong>Processadores de pagamento</strong> para cobrança de assinaturas</li>
+                <li><span class="material-icons">gavel</span> <strong>Autoridades legais</strong> quando exigido por lei</li>
+            </ul>
+        {% elif language == 'fr' %}
+            <h3><span class="material-icons">share</span> Partage de Données et Tiers</h3>
+            <p>Nous ne <strong>vendons pas</strong> vos données personnelles. Nous pouvons partager des données avec :</p>
+            <ul class="feature-list">
+                <li><span class="material-icons">cloud</span> <strong>Fournisseurs d'hébergement cloud</strong> (serveurs, stockage) pour exploiter la plateforme</li>
+                <li><span class="material-icons">smart_toy</span> <strong>Services de traitement IA</strong> pour l'analyse des radiographies (les images sont traitées de manière sécurisée et non conservées par des tiers)</li>
+                <li><span class="material-icons">payment</span> <strong>Processeurs de paiement</strong> pour la facturation des abonnements</li>
+                <li><span class="material-icons">gavel</span> <strong>Autorités légales</strong> lorsque requis par la loi</li>
+            </ul>
+        {% elif language == 'it' %}
+            <h3><span class="material-icons">share</span> Condivisione dei Dati e Terze Parti</h3>
+            <p>Noi <strong>non vendiamo</strong> i vostri dati personali. Potremmo condividere dati con:</p>
+            <ul class="feature-list">
+                <li><span class="material-icons">cloud</span> <strong>Fornitori di hosting cloud</strong> (server, storage) per operare la piattaforma</li>
+                <li><span class="material-icons">smart_toy</span> <strong>Servizi di elaborazione IA</strong> per l'analisi delle radiografie (le immagini sono elaborate in modo sicuro e non trattenute da terze parti)</li>
+                <li><span class="material-icons">payment</span> <strong>Processori di pagamento</strong> per la fatturazione degli abbonamenti</li>
+                <li><span class="material-icons">gavel</span> <strong>Autorità legali</strong> quando richiesto dalla legge</li>
+            </ul>
+        {% else %}
+            <h3><span class="material-icons">share</span> Compartición de Datos y Terceros</h3>
+            <p><strong>No vendemos</strong> sus datos personales. Podemos compartir datos con:</p>
+            <ul class="feature-list">
+                <li><span class="material-icons">cloud</span> <strong>Proveedores de alojamiento en la nube</strong> (servidores, almacenamiento) para operar la plataforma</li>
+                <li><span class="material-icons">smart_toy</span> <strong>Servicios de procesamiento de IA</strong> para el análisis de radiografías (las imágenes se procesan de forma segura y no son retenidas por terceros)</li>
+                <li><span class="material-icons">payment</span> <strong>Procesadores de pago</strong> para la facturación de suscripciones</li>
+                <li><span class="material-icons">gavel</span> <strong>Autoridades legales</strong> cuando sea requerido por la ley</li>
+            </ul>
+        {% endif %}
+    </div>
+
+    <!-- 5. Data Security -->
+    <div class="feature-section">
+        {% if language == 'en' %}
+            <h3><span class="material-icons">security</span> Data Security</h3>
+            <p>We implement industry-standard security measures to protect your data:</p>
+            <ul class="feature-list">
+                <li><span class="material-icons">https</span> All data is transmitted using TLS/SSL encryption</li>
+                <li><span class="material-icons">lock</span> Data at rest is encrypted in our databases</li>
+                <li><span class="material-icons">vpn_key</span> Secure authentication with PIN/password protection and session management</li>
+                <li><span class="material-icons">admin_panel_settings</span> Role-based access controls limiting data access to authorized personnel</li>
+                <li><span class="material-icons">backup</span> Regular backups and disaster recovery procedures</li>
+            </ul>
+        {% elif language == 'pt' %}
+            <h3><span class="material-icons">security</span> Segurança dos Dados</h3>
+            <p>Implementamos medidas de segurança padrão da indústria para proteger seus dados:</p>
+            <ul class="feature-list">
+                <li><span class="material-icons">https</span> Todos os dados são transmitidos usando criptografia TLS/SSL</li>
+                <li><span class="material-icons">lock</span> Os dados em repouso são criptografados em nossos bancos de dados</li>
+                <li><span class="material-icons">vpn_key</span> Autenticação segura com proteção por PIN/senha e gestão de sessões</li>
+                <li><span class="material-icons">admin_panel_settings</span> Controles de acesso baseados em funções limitando o acesso aos dados ao pessoal autorizado</li>
+                <li><span class="material-icons">backup</span> Backups regulares e procedimentos de recuperação de desastres</li>
+            </ul>
+        {% elif language == 'fr' %}
+            <h3><span class="material-icons">security</span> Sécurité des Données</h3>
+            <p>Nous mettons en œuvre des mesures de sécurité conformes aux normes de l'industrie pour protéger vos données :</p>
+            <ul class="feature-list">
+                <li><span class="material-icons">https</span> Toutes les données sont transmises en utilisant le chiffrement TLS/SSL</li>
+                <li><span class="material-icons">lock</span> Les données au repos sont chiffrées dans nos bases de données</li>
+                <li><span class="material-icons">vpn_key</span> Authentification sécurisée avec protection par PIN/mot de passe et gestion des sessions</li>
+                <li><span class="material-icons">admin_panel_settings</span> Contrôles d'accès basés sur les rôles limitant l'accès aux données au personnel autorisé</li>
+                <li><span class="material-icons">backup</span> Sauvegardes régulières et procédures de reprise après sinistre</li>
+            </ul>
+        {% elif language == 'it' %}
+            <h3><span class="material-icons">security</span> Sicurezza dei Dati</h3>
+            <p>Implementiamo misure di sicurezza standard del settore per proteggere i vostri dati:</p>
+            <ul class="feature-list">
+                <li><span class="material-icons">https</span> Tutti i dati sono trasmessi utilizzando la crittografia TLS/SSL</li>
+                <li><span class="material-icons">lock</span> I dati a riposo sono crittografati nei nostri database</li>
+                <li><span class="material-icons">vpn_key</span> Autenticazione sicura con protezione PIN/password e gestione delle sessioni</li>
+                <li><span class="material-icons">admin_panel_settings</span> Controlli di accesso basati sui ruoli che limitano l'accesso ai dati al personale autorizzato</li>
+                <li><span class="material-icons">backup</span> Backup regolari e procedure di ripristino in caso di disastro</li>
+            </ul>
+        {% else %}
+            <h3><span class="material-icons">security</span> Seguridad de los Datos</h3>
+            <p>Implementamos medidas de seguridad estándar de la industria para proteger sus datos:</p>
+            <ul class="feature-list">
+                <li><span class="material-icons">https</span> Todos los datos se transmiten usando cifrado TLS/SSL</li>
+                <li><span class="material-icons">lock</span> Los datos en reposo se cifran en nuestras bases de datos</li>
+                <li><span class="material-icons">vpn_key</span> Autenticación segura con protección por PIN/contraseña y gestión de sesiones</li>
+                <li><span class="material-icons">admin_panel_settings</span> Controles de acceso basados en roles que limitan el acceso a los datos al personal autorizado</li>
+                <li><span class="material-icons">backup</span> Copias de seguridad regulares y procedimientos de recuperación ante desastres</li>
+            </ul>
+        {% endif %}
+    </div>
+
+    <!-- 6. Data Retention -->
+    <div class="feature-section">
+        {% if language == 'en' %}
+            <h3><span class="material-icons">schedule</span> Data Retention</h3>
+            <p>We retain your data for as long as your account is active or as needed to provide services. Medical records are retained in compliance with applicable healthcare data retention laws. When you request account deletion, we will remove your personal data within 30 days, except where retention is required by law.</p>
+        {% elif language == 'pt' %}
+            <h3><span class="material-icons">schedule</span> Retenção de Dados</h3>
+            <p>Retemos seus dados enquanto sua conta estiver ativa ou conforme necessário para fornecer serviços. Registros médicos são retidos em conformidade com as leis de retenção de dados de saúde aplicáveis. Quando você solicitar a exclusão da conta, removeremos seus dados pessoais dentro de 30 dias, exceto quando a retenção for exigida por lei.</p>
+        {% elif language == 'fr' %}
+            <h3><span class="material-icons">schedule</span> Conservation des Données</h3>
+            <p>Nous conservons vos données tant que votre compte est actif ou selon les besoins pour fournir des services. Les dossiers médicaux sont conservés conformément aux lois applicables en matière de conservation des données de santé. Lorsque vous demandez la suppression de votre compte, nous supprimons vos données personnelles dans un délai de 30 jours, sauf si la conservation est requise par la loi.</p>
+        {% elif language == 'it' %}
+            <h3><span class="material-icons">schedule</span> Conservazione dei Dati</h3>
+            <p>Conserviamo i vostri dati finché il vostro account è attivo o secondo necessità per fornire servizi. I registri medici sono conservati in conformità con le leggi applicabili sulla conservazione dei dati sanitari. Quando richiedete la cancellazione dell'account, rimuoveremo i vostri dati personali entro 30 giorni, salvo nei casi in cui la conservazione sia richiesta dalla legge.</p>
+        {% else %}
+            <h3><span class="material-icons">schedule</span> Retención de Datos</h3>
+            <p>Conservamos sus datos mientras su cuenta esté activa o según sea necesario para prestar servicios. Los registros médicos se conservan de acuerdo con las leyes aplicables de retención de datos sanitarios. Cuando solicite la eliminación de su cuenta, eliminaremos sus datos personales en un plazo de 30 días, excepto cuando la retención sea exigida por ley.</p>
+        {% endif %}
+    </div>
+
+    <!-- 7. Your Rights -->
+    <div class="feature-section">
+        {% if language == 'en' %}
+            <h3><span class="material-icons">verified_user</span> Your Rights</h3>
+            <p>Depending on your jurisdiction, you may have the following rights:</p>
+            <ul class="feature-list">
+                <li><span class="material-icons">visibility</span> <strong>Access:</strong> Request a copy of the personal data we hold about you</li>
+                <li><span class="material-icons">edit</span> <strong>Rectification:</strong> Request correction of inaccurate data</li>
+                <li><span class="material-icons">delete</span> <strong>Deletion:</strong> Request deletion of your personal data</li>
+                <li><span class="material-icons">file_download</span> <strong>Portability:</strong> Request your data in a portable format</li>
+                <li><span class="material-icons">block</span> <strong>Objection:</strong> Object to certain processing of your data</li>
+                <li><span class="material-icons">do_not_disturb</span> <strong>Withdraw consent:</strong> Withdraw previously given consent at any time</li>
+            </ul>
+            <p>To exercise these rights, contact us at <strong>privacy@atlas.com</strong>.</p>
+        {% elif language == 'pt' %}
+            <h3><span class="material-icons">verified_user</span> Seus Direitos</h3>
+            <p>Dependendo da sua jurisdição, você pode ter os seguintes direitos:</p>
+            <ul class="feature-list">
+                <li><span class="material-icons">visibility</span> <strong>Acesso:</strong> Solicitar uma cópia dos dados pessoais que mantemos sobre você</li>
+                <li><span class="material-icons">edit</span> <strong>Retificação:</strong> Solicitar a correção de dados imprecisos</li>
+                <li><span class="material-icons">delete</span> <strong>Exclusão:</strong> Solicitar a exclusão de seus dados pessoais</li>
+                <li><span class="material-icons">file_download</span> <strong>Portabilidade:</strong> Solicitar seus dados em formato portátil</li>
+                <li><span class="material-icons">block</span> <strong>Objeção:</strong> Opor-se a determinados processamentos de seus dados</li>
+                <li><span class="material-icons">do_not_disturb</span> <strong>Retirar consentimento:</strong> Retirar o consentimento anteriormente dado a qualquer momento</li>
+            </ul>
+            <p>Para exercer esses direitos, entre em contato pelo <strong>privacy@atlas.com</strong>.</p>
+        {% elif language == 'fr' %}
+            <h3><span class="material-icons">verified_user</span> Vos Droits</h3>
+            <p>Selon votre juridiction, vous pouvez avoir les droits suivants :</p>
+            <ul class="feature-list">
+                <li><span class="material-icons">visibility</span> <strong>Accès :</strong> Demander une copie des données personnelles que nous détenons à votre sujet</li>
+                <li><span class="material-icons">edit</span> <strong>Rectification :</strong> Demander la correction de données inexactes</li>
+                <li><span class="material-icons">delete</span> <strong>Suppression :</strong> Demander la suppression de vos données personnelles</li>
+                <li><span class="material-icons">file_download</span> <strong>Portabilité :</strong> Demander vos données dans un format portable</li>
+                <li><span class="material-icons">block</span> <strong>Objection :</strong> S'opposer à certains traitements de vos données</li>
+                <li><span class="material-icons">do_not_disturb</span> <strong>Retirer le consentement :</strong> Retirer le consentement précédemment donné à tout moment</li>
+            </ul>
+            <p>Pour exercer ces droits, contactez-nous à <strong>privacy@atlas.com</strong>.</p>
+        {% elif language == 'it' %}
+            <h3><span class="material-icons">verified_user</span> I Vostri Diritti</h3>
+            <p>A seconda della vostra giurisdizione, potreste avere i seguenti diritti:</p>
+            <ul class="feature-list">
+                <li><span class="material-icons">visibility</span> <strong>Accesso:</strong> Richiedere una copia dei dati personali che deteniamo su di voi</li>
+                <li><span class="material-icons">edit</span> <strong>Rettifica:</strong> Richiedere la correzione di dati inesatti</li>
+                <li><span class="material-icons">delete</span> <strong>Cancellazione:</strong> Richiedere la cancellazione dei vostri dati personali</li>
+                <li><span class="material-icons">file_download</span> <strong>Portabilità:</strong> Richiedere i vostri dati in un formato portatile</li>
+                <li><span class="material-icons">block</span> <strong>Opposizione:</strong> Opporsi a determinati trattamenti dei vostri dati</li>
+                <li><span class="material-icons">do_not_disturb</span> <strong>Revocare il consenso:</strong> Revocare il consenso precedentemente dato in qualsiasi momento</li>
+            </ul>
+            <p>Per esercitare questi diritti, contattateci a <strong>privacy@atlas.com</strong>.</p>
+        {% else %}
+            <h3><span class="material-icons">verified_user</span> Sus Derechos</h3>
+            <p>Dependiendo de su jurisdicción, usted puede tener los siguientes derechos:</p>
+            <ul class="feature-list">
+                <li><span class="material-icons">visibility</span> <strong>Acceso:</strong> Solicitar una copia de los datos personales que tenemos sobre usted</li>
+                <li><span class="material-icons">edit</span> <strong>Rectificación:</strong> Solicitar la corrección de datos inexactos</li>
+                <li><span class="material-icons">delete</span> <strong>Supresión:</strong> Solicitar la eliminación de sus datos personales</li>
+                <li><span class="material-icons">file_download</span> <strong>Portabilidad:</strong> Solicitar sus datos en un formato portable</li>
+                <li><span class="material-icons">block</span> <strong>Oposición:</strong> Oponerse a ciertos procesamientos de sus datos</li>
+                <li><span class="material-icons">do_not_disturb</span> <strong>Retirar consentimiento:</strong> Retirar el consentimiento previamente otorgado en cualquier momento</li>
+            </ul>
+            <p>Para ejercer estos derechos, contacte con nosotros en <strong>privacy@atlas.com</strong>.</p>
+        {% endif %}
+    </div>
+
+    <!-- 8. Children's Privacy -->
+    <div class="feature-section">
+        {% if language == 'en' %}
+            <h3><span class="material-icons">child_care</span> Children's Privacy</h3>
+            <p>Atlas is a professional business management tool. Patient data (including children's data) is entered and managed by authorized dental professionals with appropriate parental/guardian consent. We do not knowingly collect data directly from children. All business records are managed through the clinic's professional account with parental authorization.</p>
+        {% elif language == 'pt' %}
+            <h3><span class="material-icons">child_care</span> Privacidade de Menores</h3>
+            <p>Atlas é uma ferramenta profissional de gestão odontológica. Os dados dos pacientes (incluindo dados de crianças) são inseridos e gerenciados por profissionais dentais autorizados com o consentimento adequado dos pais/responsáveis. Não coletamos dados diretamente de crianças. Todos os registros odontológicos pediátricos são gerenciados através da conta profissional da clínica com autorização dos pais.</p>
+        {% elif language == 'fr' %}
+            <h3><span class="material-icons">child_care</span> Confidentialité des Enfants</h3>
+            <p>Atlas est un outil professionnel de gestion dentaire. Les données des patients (y compris les données des enfants) sont saisies et gérées par des professionnels dentaires autorisés avec le consentement parental/du tuteur approprié. Nous ne collectons pas sciemment de données directement auprès des enfants. Tous les dossiers dentaires pédiatriques sont gérés via le compte professionnel de la clinique avec l'autorisation parentale.</p>
+        {% elif language == 'it' %}
+            <h3><span class="material-icons">child_care</span> Privacy dei Minori</h3>
+            <p>Atlas è uno strumento professionale di gestione odontoiatrica. I dati dei pazienti (inclusi i dati dei bambini) sono inseriti e gestiti da professionisti dentali autorizzati con il consenso appropriato dei genitori/tutori. Non raccogliamo consapevolmente dati direttamente dai bambini. Tutti i registri odontoiatrici pediatrici sono gestiti attraverso l'account professionale della clinica con l'autorizzazione dei genitori.</p>
+        {% else %}
+            <h3><span class="material-icons">child_care</span> Privacidad de Menores</h3>
+            <p>Atlas es una herramienta profesional de gestión empresarial. Los datos de pacientes (incluidos los datos de menores) son introducidos y gestionados por profesionales dentales autorizados con el consentimiento parental/del tutor apropiado. No recopilamos datos directamente de menores. Todos los registros dentales pediátricos se gestionan a través de la cuenta profesional de la clínica con autorización parental.</p>
+        {% endif %}
+    </div>
+
+    <!-- 9. App Permissions -->
+    <div class="feature-section">
+        {% if language == 'en' %}
+            <h3><span class="material-icons">app_settings_alt</span> App Permissions Explained</h3>
+            <ul class="feature-list">
+                <li><span class="material-icons">photo_camera</span> <strong>CAMERA:</strong> Required to capture clinical photographs and radiographs for patient treatment records and AI dental analysis. Only activated when the user explicitly takes a photo.</li>
+                <li><span class="material-icons">photo_library</span> <strong>STORAGE/PHOTOS:</strong> Required to save and retrieve images and radiographs from the device gallery.</li>
+                <li><span class="material-icons">notifications_active</span> <strong>NOTIFICATIONS:</strong> Used to send appointment reminders and important updates about treatments.</li>
+                <li><span class="material-icons">wifi</span> <strong>INTERNET:</strong> Required for platform functionality, data synchronization, and AI analysis.</li>
+            </ul>
+        {% elif language == 'pt' %}
+            <h3><span class="material-icons">app_settings_alt</span> Permissões do Aplicativo Explicadas</h3>
+            <ul class="feature-list">
+                <li><span class="material-icons">photo_camera</span> <strong>CÂMERA:</strong> Necessária para capturar fotografias clínicas e radiografias para registros de tratamento de pacientes e análise dental por IA. Ativada apenas quando o usuário tira uma foto explicitamente.</li>
+                <li><span class="material-icons">photo_library</span> <strong>ARMAZENAMENTO/FOTOS:</strong> Necessário para salvar e recuperar imagens dentais e radiografias da galeria do dispositivo.</li>
+                <li><span class="material-icons">notifications_active</span> <strong>NOTIFICAÇÕES:</strong> Usadas para enviar lembretes de consultas e atualizações importantes sobre tratamentos.</li>
+                <li><span class="material-icons">wifi</span> <strong>INTERNET:</strong> Necessária para funcionalidade da plataforma, sincronização de dados e análise por IA.</li>
+            </ul>
+        {% elif language == 'fr' %}
+            <h3><span class="material-icons">app_settings_alt</span> Permissions de l'Application Expliquées</h3>
+            <ul class="feature-list">
+                <li><span class="material-icons">photo_camera</span> <strong>CAMÉRA :</strong> Requise pour capturer des photographies cliniques et des radiographies pour les dossiers de traitement des patients et l'analyse dentaire par IA. Activée uniquement lorsque l'utilisateur prend explicitement une photo.</li>
+                <li><span class="material-icons">photo_library</span> <strong>STOCKAGE/PHOTOS :</strong> Requis pour sauvegarder et récupérer les images dentaires et les radiographies de la galerie de l'appareil.</li>
+                <li><span class="material-icons">notifications_active</span> <strong>NOTIFICATIONS :</strong> Utilisées pour envoyer des rappels de rendez-vous et des mises à jour importantes sur les traitements.</li>
+                <li><span class="material-icons">wifi</span> <strong>INTERNET :</strong> Requis pour le fonctionnement de la plateforme, la synchronisation des données et l'analyse par IA.</li>
+            </ul>
+        {% elif language == 'it' %}
+            <h3><span class="material-icons">app_settings_alt</span> Permessi dell'App Spiegati</h3>
+            <ul class="feature-list">
+                <li><span class="material-icons">photo_camera</span> <strong>FOTOCAMERA:</strong> Richiesta per catturare fotografie cliniche e radiografie per i registri di trattamento dei pazienti e l'analisi dentale con IA. Attivata solo quando l'utente scatta esplicitamente una foto.</li>
+                <li><span class="material-icons">photo_library</span> <strong>ARCHIVIAZIONE/FOTO:</strong> Richiesto per salvare e recuperare immagini e radiografie dalla galleria del dispositivo.</li>
+                <li><span class="material-icons">notifications_active</span> <strong>NOTIFICHE:</strong> Utilizzate per inviare promemoria di appuntamenti e aggiornamenti importanti sui trattamenti.</li>
+                <li><span class="material-icons">wifi</span> <strong>INTERNET:</strong> Richiesto per la funzionalità della piattaforma, la sincronizzazione dei dati e l'analisi con IA.</li>
+            </ul>
+        {% else %}
+            <h3><span class="material-icons">app_settings_alt</span> Permisos de la App Explicados</h3>
+            <ul class="feature-list">
+                <li><span class="material-icons">photo_camera</span> <strong>CÁMARA:</strong> Necesaria para capturar fotografías clínicas y radiografías para registros de tratamiento de pacientes y análisis dental con IA. Solo se activa cuando el usuario toma una foto explícitamente.</li>
+                <li><span class="material-icons">photo_library</span> <strong>ALMACENAMIENTO/FOTOS:</strong> Necesario para guardar y recuperar imágenes y radiografías de la galería del dispositivo.</li>
+                <li><span class="material-icons">notifications_active</span> <strong>NOTIFICACIONES:</strong> Utilizadas para enviar recordatorios de citas y actualizaciones importantes sobre tratamientos.</li>
+                <li><span class="material-icons">wifi</span> <strong>INTERNET:</strong> Necesario para la funcionalidad de la plataforma, sincronización de datos y análisis con IA.</li>
+            </ul>
+        {% endif %}
+    </div>
+
+    <!-- 10. Changes and Contact -->
+    <div class="feature-section">
+        {% if language == 'en' %}
+            <h3><span class="material-icons">update</span> Changes to This Policy</h3>
+            <p>We may update this privacy policy from time to time. We will notify you of significant changes through the app or by email. Continued use of the app after changes constitutes acceptance of the updated policy.</p>
+            <h3><span class="material-icons">contact_mail</span> Contact Us</h3>
+            <p>If you have any questions about this privacy policy or our data practices, please contact us:</p>
+            <ul class="feature-list">
+                <li><span class="material-icons">email</span> <strong>Email:</strong> privacy@atlas.com</li>
+                <li><span class="material-icons">business</span> <strong>Company:</strong> Atlas Care</li>
+                <li><span class="material-icons">language</span> <strong>Website:</strong> www.atlas.com</li>
+            </ul>
+        {% elif language == 'pt' %}
+            <h3><span class="material-icons">update</span> Alterações nesta Política</h3>
+            <p>Podemos atualizar esta política de privacidade periodicamente. Notificaremos você sobre alterações significativas através do aplicativo ou por e-mail. O uso continuado do aplicativo após as alterações constitui aceitação da política atualizada.</p>
+            <h3><span class="material-icons">contact_mail</span> Contate-nos</h3>
+            <p>Se tiver dúvidas sobre esta política de privacidade ou nossas práticas de dados, entre em contato:</p>
+            <ul class="feature-list">
+                <li><span class="material-icons">email</span> <strong>E-mail:</strong> privacy@atlas.com</li>
+                <li><span class="material-icons">business</span> <strong>Empresa:</strong> Atlas Care</li>
+                <li><span class="material-icons">language</span> <strong>Site:</strong> www.atlas.com</li>
+            </ul>
+        {% elif language == 'fr' %}
+            <h3><span class="material-icons">update</span> Modifications de cette Politique</h3>
+            <p>Nous pouvons mettre à jour cette politique de confidentialité de temps à autre. Nous vous informerons des changements significatifs via l'application ou par e-mail. L'utilisation continue de l'application après les modifications constitue l'acceptation de la politique mise à jour.</p>
+            <h3><span class="material-icons">contact_mail</span> Nous Contacter</h3>
+            <p>Si vous avez des questions concernant cette politique de confidentialité ou nos pratiques en matière de données, veuillez nous contacter :</p>
+            <ul class="feature-list">
+                <li><span class="material-icons">email</span> <strong>E-mail :</strong> privacy@atlas.com</li>
+                <li><span class="material-icons">business</span> <strong>Entreprise :</strong> Atlas Care</li>
+                <li><span class="material-icons">language</span> <strong>Site web :</strong> www.atlas.com</li>
+            </ul>
+        {% elif language == 'it' %}
+            <h3><span class="material-icons">update</span> Modifiche a questa Politica</h3>
+            <p>Potremmo aggiornare questa politica sulla privacy di tanto in tanto. Vi informeremo dei cambiamenti significativi tramite l'app o via e-mail. L'uso continuato dell'app dopo le modifiche costituisce accettazione della politica aggiornata.</p>
+            <h3><span class="material-icons">contact_mail</span> Contattaci</h3>
+            <p>Se avete domande su questa politica sulla privacy o sulle nostre pratiche relative ai dati, contattateci:</p>
+            <ul class="feature-list">
+                <li><span class="material-icons">email</span> <strong>E-mail:</strong> privacy@atlas.com</li>
+                <li><span class="material-icons">business</span> <strong>Azienda:</strong> Atlas Care</li>
+                <li><span class="material-icons">language</span> <strong>Sito web:</strong> www.atlas.com</li>
+            </ul>
+        {% else %}
+            <h3><span class="material-icons">update</span> Cambios en esta Política</h3>
+            <p>Podemos actualizar esta política de privacidad periódicamente. Le notificaremos de cambios significativos a través de la app o por correo electrónico. El uso continuado de la app después de los cambios constituye la aceptación de la política actualizada.</p>
+            <h3><span class="material-icons">contact_mail</span> Contacto</h3>
+            <p>Si tiene preguntas sobre esta política de privacidad o nuestras prácticas de datos, contáctenos:</p>
+            <ul class="feature-list">
+                <li><span class="material-icons">email</span> <strong>Email:</strong> privacy@atlas.com</li>
+                <li><span class="material-icons">business</span> <strong>Empresa:</strong> Atlas Care</li>
+                <li><span class="material-icons">language</span> <strong>Web:</strong> www.atlas.com</li>
+            </ul>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block version_info %}
+    {% if privacy %}
+        <div class="version-info">
+            <span class="material-icons">policy</span>
+            {% if language == 'es' %}
+                <p>Documento generado automáticamente • Versión {{ privacy.version }} • {{ privacy.created_at|date:"d/m/Y" }}</p>
+            {% elif language == 'en' %}
+                <p>Automatically generated document • Version {{ privacy.version }} • {{ privacy.created_at|date:"m/d/Y" }}</p>
+            {% elif language == 'pt' %}
+                <p>Documento gerado automaticamente • Versão {{ privacy.version }} • {{ privacy.created_at|date:"d/m/Y" }}</p>
+            {% elif language == 'fr' %}
+                <p>Document généré automatiquement • Version {{ privacy.version }} • {{ privacy.created_at|date:"d/m/Y" }}</p>
+            {% elif language == 'it' %}
+                <p>Documento generato automaticamente • Versione {{ privacy.version }} • {{ privacy.created_at|date:"d/m/Y" }}</p>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}

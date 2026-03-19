@@ -1,0 +1,6 @@
+{% load i18n %}
+<script>
+    // Datos de sucursales para el selector
+    window.userBranches = {{ user_branches_json|safe }};
+    window.activeBranchId = {{ active_branch_id|default:"null" }};
+</script>

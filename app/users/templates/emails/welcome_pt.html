@@ -1,0 +1,34 @@
+{% extends "emails/base_email.html" %}
+
+{% block html_lang %}pt{% endblock %}
+
+{% block title %}Bem-vindo ao Atlas{% endblock %}
+
+{% block content %}
+<h1>Bem-vindo(a), {{ user.first_name }}! 🎉</h1>
+
+<div class="content">
+    <p>Temos o prazer de recebê-lo na <strong>Atlas</strong>, sua plataforma completa de gestão empresarial.</p>
+    
+    <p>Sua conta foi criada com sucesso e você já pode começar a aproveitar todas as nossas funcionalidades:</p>
+    
+    <div class="features">
+        <div class="feature-item">Gestão completa de pacientes e consultas</div>
+        <div class="feature-item">Prontuários clínicos digitais</div>
+        <div class="feature-item">Odontogramas interativos</div>
+        <div class="feature-item">Controle de estoque e vendas</div>
+        <div class="feature-item">Administração de múltiplas filiais</div>
+        <div class="feature-item">Relatórios e análises em tempo real</div>
+    </div>
+    
+    <p style="text-align: center;">
+        <a href="{{ login_url }}" class="button">Fazer Login</a>
+    </p>
+    
+    <p>Se você tiver alguma dúvida ou precisar de ajuda, não hesite em entrar em contato com nossa equipe de suporte.</p>
+</div>
+{% endblock %}
+
+{% block footer_text %}Este é um e-mail automático, por favor não responda.{% endblock %}
+
+{% block copyright %}Todos os direitos reservados.{% endblock %}

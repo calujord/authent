@@ -1,0 +1,52 @@
+{% extends "emails/base.html" %}
+{% load i18n %}
+
+{% block title %}{% blocktrans %}Your business has been created{% endblocktrans %} - Atlas{% endblock %}
+
+{% block tagline %}
+    {% blocktrans %}Business Management Platform{% endblocktrans %}
+{% endblock %}
+
+{% block content %}
+    <h1>🎉 {% blocktrans %}Congratulations!{% endblocktrans %}</h1>
+
+    <p>{% blocktrans with first_name=owner_name %}Hello {{ first_name }},{% endblocktrans %}</p>
+
+    <p>
+        {% blocktrans with business_name=business.name %}
+            Your business <strong>{{ business_name }}</strong> has been successfully created on Atlas.
+        {% endblocktrans %}
+    </p>
+
+    <div class="success-box">
+        <p style="margin: 8px 0;"><strong>🏢 {% blocktrans %}Business:{% endblocktrans %}</strong> {{ business.name }}</p>
+        {% if business.trade_name %}
+        <p style="margin: 8px 0;"><strong>🏷️ {% blocktrans %}Trade Name:{% endblocktrans %}</strong> {{ business.trade_name }}</p>
+        {% endif %}
+        <p style="margin: 8px 0;"><strong>📋 {% blocktrans %}Type:{% endblocktrans %}</strong> {{ business_type }}</p>
+        {% if business_address %}
+        <p style="margin: 8px 0;"><strong>📍 {% blocktrans %}Address:{% endblocktrans %}</strong> {{ business_address }}</p>
+        {% endif %}
+        <p style="margin: 8px 0;"><strong>📅 {% blocktrans %}Created:{% endblocktrans %}</strong> {{ business.created_at|date:"SHORT_DATE_FORMAT" }}</p>
+    </div>
+
+    <div class="info-box">
+        <p style="margin: 0;"><strong>{% blocktrans %}What's next?{% endblocktrans %}</strong></p>
+        <ul style="margin: 10px 0 0 0; padding-left: 20px;">
+            <li>{% blocktrans %}A main branch has been automatically created for you{% endblocktrans %}</li>
+            <li>{% blocktrans %}Invite your team members to start collaborating{% endblocktrans %}</li>
+            <li>{% blocktrans %}Set up your services and schedule{% endblocktrans %}</li>
+            <li>{% blocktrans %}Start managing your patients{% endblocktrans %}</li>
+        </ul>
+    </div>
+
+    <p style="margin-top: 30px; color: #7f8c8d; font-size: 14px;">
+        {% blocktrans %}If you did not create this business, please contact our support team immediately.{% endblocktrans %}
+    </p>
+{% endblock %}
+
+{% block footer_text %}
+    {% blocktrans %}This is an automated email, please do not reply to this message.{% endblocktrans %}
+    <br>
+    &copy; Atlas - {% blocktrans %}All rights reserved{% endblocktrans %}
+{% endblock %}

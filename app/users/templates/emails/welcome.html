@@ -1,0 +1,33 @@
+{% extends "emails/base_email.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Welcome to Atlas" %}{% endblock %}
+
+{% block content %}
+<h1>{% blocktrans with name=user.first_name %}Welcome, {{ name }}!{% endblocktrans %} 🎉</h1>
+
+<div class="content">
+    <p>{% blocktrans %}We're pleased to welcome you to <strong>Atlas</strong>, your comprehensive business management platform.{% endblocktrans %}</p>
+    
+    <p>{% trans "Your account has been successfully created and you can now start enjoying all our features:" %}</p>
+    
+    <div class="features">
+        <div class="feature-item">{% trans "Complete patient and appointment management" %}</div>
+        <div class="feature-item">{% trans "Digital clinical records" %}</div>
+        <div class="feature-item">{% trans "Interactive odontograms" %}</div>
+        <div class="feature-item">{% trans "Inventory and sales control" %}</div>
+        <div class="feature-item">{% trans "Multi-branch administration" %}</div>
+        <div class="feature-item">{% trans "Real-time reports and analytics" %}</div>
+    </div>
+    
+    <p style="text-align: center;">
+        <a href="{{ login_url }}" class="button">{% trans "Sign In" %}</a>
+    </p>
+    
+    <p>{% trans "If you have any questions or need assistance, please don't hesitate to contact our support team." %}</p>
+</div>
+{% endblock %}
+
+{% block footer_text %}{% trans "This is an automated email, please do not reply." %}{% endblock %}
+
+{% block copyright %}{% trans "All rights reserved." %}{% endblock %}

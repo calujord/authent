@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facturación - Atlas Care</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+            max-width: 480px;
+            width: 100%;
+            padding: 48px 40px;
+            text-align: center;
+        }
+        
+        .icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 40px;
+        }
+        
+        .icon.success {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: white;
+        }
+        
+        .icon.info {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+        }
+        
+        .icon.cancel {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+        }
+        
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 16px;
+        }
+        
+        .message {
+            font-size: 16px;
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+        
+        .plan-info {
+            background: #f3f4f6;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+        
+        .plan-name {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+        
+        .plan-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-active {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+        
+        .status-trialing {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+        
+        .status-canceled {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+            margin-left: 12px;
+        }
+        
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+        
+        .buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        
+        .footer {
+            margin-top: 32px;
+            font-size: 14px;
+            color: #9ca3af;
+        }
+        
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .deep-link-hint {
+            margin-top: 24px;
+            padding: 16px;
+            background: #f0f9ff;
+            border-radius: 12px;
+            font-size: 14px;
+            color: #0369a1;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 32px 24px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .btn-secondary {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% if success %}
+        <!-- Estado: Pago exitoso -->
+        <div class="icon success">✓</div>
+        <h1>¡Pago Completado!</h1>
+        <p class="message">
+            Tu suscripción ha sido activada correctamente. 
+            Ya puedes disfrutar de todas las funcionalidades de tu plan.
+        </p>
+        
+        {% if subscription %}
+        <div class="plan-info">
+            <div class="plan-name">{{ subscription.plan.name }}</div>
+            <span class="plan-status status-{{ subscription.status }}">
+                {% if subscription.status == 'active' %}Activo
+                {% elif subscription.status == 'trialing' %}Prueba
+                {% else %}{{ subscription.status }}
+                {% endif %}
+            </span>
+        </div>
+        {% endif %}
+        
+        <div class="buttons">
+            <a href="atlas://billing/success" class="btn btn-primary">Volver a la App</a>
+        </div>
+        
+        <div class="deep-link-hint">
+            Si la app no se abre automáticamente, 
+            <a href="atlas://billing/success">toca aquí</a> o abre la app manualmente.
+        </div>
+        
+        {% elif canceled %}
+        <!-- Estado: Pago cancelado -->
+        <div class="icon cancel">↩</div>
+        <h1>Pago Cancelado</h1>
+        <p class="message">
+            Has cancelado el proceso de pago. 
+            Tu suscripción actual se mantiene sin cambios.
+        </p>
+        
+        {% if subscription %}
+        <div class="plan-info">
+            <div class="plan-name">{{ subscription.plan.name }}</div>
+            <span class="plan-status status-{{ subscription.status }}">
+                {% if subscription.status == 'active' %}Activo
+                {% elif subscription.status == 'trialing' %}Prueba
+                {% else %}{{ subscription.status }}
+                {% endif %}
+            </span>
+        </div>
+        {% endif %}
+        
+        <div class="buttons">
+            <a href="atlas://billing" class="btn btn-primary">Volver a la App</a>
+        </div>
+        
+        {% else %}
+        <!-- Estado: Vista normal de facturación -->
+        <div class="icon info">💳</div>
+        <h1>Facturación</h1>
+        <p class="message">
+            Gestiona tu suscripción y métodos de pago desde la aplicación Atlas Care.
+        </p>
+        
+        {% if subscription %}
+        <div class="plan-info">
+            <div class="plan-name">{{ subscription.plan.name }}</div>
+            <span class="plan-status status-{{ subscription.status }}">
+                {% if subscription.status == 'active' %}Activo
+                {% elif subscription.status == 'trialing' %}Prueba
+                {% else %}{{ subscription.status }}
+                {% endif %}
+            </span>
+        </div>
+        {% endif %}
+        
+        <div class="buttons">
+            <a href="atlas://billing" class="btn btn-primary">Abrir en la App</a>
+        </div>
+        {% endif %}
+        
+        <p class="footer">
+            ¿Necesitas ayuda? <a href="mailto:soporte@atlas.com">Contáctanos</a>
+        </p>
+    </div>
+    
+    <script>
+        // Intentar abrir la app automáticamente en móviles
+        (function() {
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            const success = {{ success|yesno:"true,false" }};
+            
+            if (isMobile && success) {
+                // Esperar un momento antes de intentar abrir la app
+                setTimeout(function() {
+                    window.location.href = 'atlas://billing/success';
+                }, 1000);
+            }
+        })();
+    </script>
+</body>
+</html>

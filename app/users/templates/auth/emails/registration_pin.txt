@@ -1,0 +1,14 @@
+Código de verificación - Atlas
+================================
+
+Hola,
+
+Tu código de verificación para registrarte en Atlas es:
+
+    {{ pin_code }}
+
+Este código expira en 15 minutos y tiene un máximo de 5 intentos.
+
+Si no solicitaste este código, puedes ignorar este correo de forma segura.
+
+— El equipo de {{ site_name }}

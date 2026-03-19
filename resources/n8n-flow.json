@@ -1,0 +1,480 @@
+{
+  "name": "ChatBot - Whatsapp Completo",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "whatsapp",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "4947cde8-eaf8-481e-8ce1-384559809600",
+      "name": "Webhook GET Verificacion",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        4048,
+        1936
+      ],
+      "webhookId": "ff084652-8a1c-4e85-920b-b3384d6c7a38"
+    },
+    {
+      "parameters": {
+        "jsCode": "for (const item of $input.all()) {\n  const query = item.json.query || {};\n  const verifyToken = 'mi_token_secreto_123';\n  if (query['hub.verify_token'] === verifyToken) {\n    item.json.respuesta = query['hub.challenge'];\n  } else {\n    item.json.respuesta = 'Token invalido';\n  }\n}\nreturn $input.all();"
+      },
+      "id": "6dd84d7f-c23a-4da6-9c34-41f2dc352fe7",
+      "name": "Verificar Token",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4272,
+        1936
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.respuesta }}",
+        "options": {}
+      },
+      "id": "76527c15-f077-4def-9701-5c91ba6d5927",
+      "name": "Responder Verificacion",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        4496,
+        1936
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "whatsapp",
+        "options": {}
+      },
+      "id": "82cd0701-c736-4e3c-b00d-a05178ce7494",
+      "name": "Webhook POST Mensajes",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        4048,
+        2176
+      ],
+      "webhookId": "c5473d19-b782-4013-a0dd-e43fe873b598"
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $input.first().json.body || $input.first().json;\nconst entry = body?.entry?.[0];\nconst changes = entry?.changes?.[0];\nconst value = changes?.value;\nconst message = value?.messages?.[0];\n\nif (message && message.type === 'text') {\n  const telefono = message.from;\n  const phoneNumberId = value.metadata.phone_number_id;\n  let history = [];\n  let profile = { name: null, email: null };\n  let interactionCount = 0;\n  try {\n    const workflowData = $getWorkflowStaticData('global');\n    history = workflowData[`hist_${telefono}`] || [];\n    profile = workflowData[`profile_${telefono}`] || { name: null, email: null };\n    interactionCount = workflowData[`ic_${telefono}`] || 0;\n  } catch(e) {}\n  const searchBody = { query: message.text.body, limit: 5 };\n  return [{\n    json: { telefono, phoneNumberId, mensaje: message.text.body, history, profile, interactionCount, searchBody }\n  }];\n}\nreturn [{ json: { telefono: null, mensaje: null, skip: true, searchBody: { query: \"\", limit: 5 } } }];\n"
+      },
+      "id": "5c46632e-87e6-4c87-9cc6-7d99ada752dd",
+      "name": "Extraer Mensaje",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4272,
+        2176
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "skip-check",
+              "leftValue": "={{ $json.skip }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "ecd99202-7950-4216-bdf3-9b6cd78b3602",
+      "name": "Tiene Mensaje?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        4496,
+        2176
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $env.OPENAI_API_KEY }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.openaiBody }}",
+        "options": {}
+      },
+      "id": "c1e968b2-51ad-4624-9e04-ee3e5ad047d8",
+      "name": "Llamar OpenAI",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5168,
+        2176
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const openaiResponse = $input.first().json;\nconst respuestaTexto = openaiResponse.choices?.[0]?.message?.content || 'Lo siento, no pude generar una respuesta.';\n\nreturn [{\n  json: {\n    telefono: $('Extraer Mensaje').first().json.telefono,\n    phoneNumberId: $('Extraer Mensaje').first().json.phoneNumberId,\n    respuesta: respuestaTexto\n  }\n}];"
+      },
+      "id": "41811b23-0cba-4765-8bf7-aa38ee18bca3",
+      "name": "Parsear Respuesta OpenAI",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5392,
+        2176
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v22.0/{{ $json.phoneNumberId }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer EAA8KCsvd2EwBQxFR43tReZAU4H5oWF5N9itwRZB6Jxq6gBDXDuM2fSYx0aSdULrivkjly7K2dh9hJXqoApYGdK1CXH705MYADDd93X8Gj2QpOons8VlLQGtToKTa6KBc3hLcrWVEE1CeYpEysY69xnbJy7OaCRNhDjiYuMRkJ99ApmIhQwZAsXrwaY7kDUyHQZDZD"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.waBodyObj }}",
+        "options": {}
+      },
+      "id": "2f3cae6c-f681-44a4-978b-e7b82ddbcfb8",
+      "name": "Enviar Respuesta WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5840,
+        2176
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const extraerData = $('Extraer Mensaje').first().json;\nconst { telefono, mensaje, phoneNumberId, profile, interactionCount } = extraerData;\nconst history = extraerData.history || [];\n\n// --- Config del chatbot (inyectada por deploy script) ---\nconst CONFIG = {\n  \"identity\": {\n    \"company\": \"Atrea\",\n    \"description\": \"un prestigioso despacho de abogados\",\n    \"specialties\": [\n      \"extranjeria\",\n      \"derecho de familia\",\n      \"ley de segunda oportunidad\"\n    ],\n    \"channel\": \"WhatsApp\",\n    \"tone\": \"profesional, cercano, empatico y elegante\"\n  },\n  \"model\": {\n    \"name\": \"gpt-4o\",\n    \"temperature\": 0.7\n  },\n  \"format_rules\": [\n    \"Usa *asterisco simple* para negrita. NUNCA uses **doble asterisco** ni markdown.\",\n    \"Usa _guion bajo_ para cursiva. Listas con guion - o numero 1.\",\n    \"PROHIBIDO: **, ##, backticks, html. Se conciso y claro.\",\n    \"Mensajes cortos: maximo 3-4 parrafos. Evita muros de texto.\"\n  ],\n  \"capture_tags\": {\n    \"name_tag\": \"{{NAME:NombreReal}}\",\n    \"email_tag\": \"{{EMAIL:email@ejemplo.com}}\",\n    \"note\": \"Si da nombre Y email en un mismo mensaje, pon ambas etiquetas.\"\n  },\n  \"message_classification\": {\n    \"enabled\": true,\n    \"types\": {\n      \"SALUDO\": \"hola, buenas, buenos dias, etc.\",\n      \"PREGUNTA_LEGAL\": \"consulta sobre tramites, derechos, plazos, documentos.\",\n      \"DATOS_PERSONALES\": \"el usuario da su nombre, email u otro dato.\",\n      \"SEGUIMIENTO\": \"sigue una conversacion en curso.\",\n      \"OTRO\": \"cualquier otro caso.\"\n    },\n    \"note\": \"No muestres la clasificacion al usuario, usala para adaptar tu respuesta.\"\n  },\n  \"knowledge_base\": {\n    \"score_threshold\": 0.25,\n    \"intro\": \"INFORMACION RELEVANTE DE LA BASE DE CONOCIMIENTO:\",\n    \"outro\": \"Usa esta informacion para responder de forma precisa y profesional. Cita datos concretos (plazos, requisitos, costes) cuando esten disponibles.\"\n  },\n  \"phases\": {\n    \"no_name\": {\n      \"title\": \"BIENVENIDA Y CAPTACION DE NOMBRE\",\n      \"objective\": \"conseguir el nombre del usuario de forma natural y elegante\",\n      \"constraints\": [\n        \"NUNCA le digas que 'necesitas' su nombre ni que es 'obligatorio'. Hazlo fluido y natural.\",\n        \"NUNCA ignores la pregunta del usuario. Siempre responde algo util antes de pedir el nombre.\",\n        \"Si da su nombre, capturalo con {{NAME:Nombre}}.\"\n      ],\n      \"strategies\": [\n        {\n          \"interaction\": 0,\n          \"label\": \"primera interaccion\",\n          \"instructions\": [\n            \"Dale una bienvenida calida y breve. Presentate como el asistente de {company}.\",\n            \"Menciona brevemente las areas de especialidad ({specialties}).\",\n            \"Preguntale su nombre de forma natural: 'Con quien tengo el gusto de hablar?'\",\n            \"Si el usuario hace una pregunta directa, responde BREVEMENTE pero pregunta su nombre.\"\n          ]\n        },\n        {\n          \"interaction\": 1,\n          \"label\": \"segunda interaccion, aun sin nombre\",\n          \"instructions\": [\n            \"Si hace una pregunta legal, responde con informacion util PERO breve (2-3 lineas max).\",\n            \"Luego: 'Para poder orientarte de forma mas personalizada, me dices tu nombre?'\"\n          ]\n        },\n        {\n          \"interaction\": 2,\n          \"label\": \"tercera interaccion, sigue sin nombre\",\n          \"instructions\": [\n            \"Enfoque distinto: 'Por cierto, no me has dicho como te llamas. Me gusta poder dirigirme a las personas por su nombre'\",\n            \"Responde con mas detalle, mostrando valor.\"\n          ]\n        },\n        {\n          \"interaction\": 3,\n          \"label\": \"cuarta interaccion, aun sin nombre\",\n          \"instructions\": [\n            \"Tono personal y directo: 'Llevamos un ratito hablando y me encantaria saber tu nombre. Como te llamas?'\"\n          ]\n        }\n      ],\n      \"fallback_strategy\": {\n        \"label_template\": \"interaccion {n}\",\n        \"instructions\": [\"Sigue respondiendo con profesionalidad.\"],\n        \"ask_pattern\": \"odd\",\n        \"ask_message\": \"SI pide el nombre con una frase variada.\",\n        \"skip_message\": \"NO pidas el nombre, dale un respiro.\"\n      }\n    },\n    \"has_name_no_email\": {\n      \"title\": \"ATENCION PERSONALIZADA\",\n      \"description\": [\n        \"SIEMPRE usa su nombre para personalizar las respuestas.\",\n        \"Responde con profundidad y profesionalidad usando la base de conocimiento.\",\n        \"En algun momento natural (no en CADA mensaje), preguntale su email para enviarle informacion. Es opcional.\",\n        \"Si ya le preguntaste el email y no respondio, NO insistas mas.\"\n      ],\n      \"appointment\": {\n        \"title\": \"OBJETIVO SECUNDARIO: AGENDAR CITA\",\n        \"suggestions\": [\n          \"Si quieres que un especialista revise tu caso, puedo ayudarte a *agendar una cita* con nuestro equipo.\"\n        ],\n        \"frequency\": \"Solo cuando la situacion lo amerite o cada 3-4 mensajes.\",\n        \"on_confirm\": {\n          \"steps\": [\n            \"Respondele con entusiasmo.\",\n            \"Pidele su correo electronico para enviarle toda la informacion.\",\n            \"Excelente, {name}! Para enviarte toda la informacion sobre tu consulta y los documentos que necesitaras, me facilitas tu correo electronico?\"\n          ],\n          \"on_email_captured\": \"Perfecto, {name}! Hemos registrado tu correo. Te enviaremos toda la informacion detallada sobre tu consulta, la documentacion necesaria y los proximos pasos. Nuestro equipo se pondra en contacto contigo para confirmar fecha y hora.\"\n        }\n      }\n    },\n    \"complete_profile\": {\n      \"title\": \"CLIENTE IDENTIFICADO\",\n      \"description\": [\n        \"Ya tienes toda la informacion. No pidas mas datos personales.\",\n        \"Ofrece un servicio excepcional usando la base de conocimiento.\"\n      ],\n      \"appointment\": {\n        \"title\": \"AGENDAR CITA\",\n        \"instructions\": [\n          \"Sugiere cita cuando el caso sea complejo.\",\n          \"No insistas si ya dijo que no.\"\n        ],\n        \"on_confirm\": \"Perfecto, {name}! Te enviaremos a {email} toda la informacion. Nuestro equipo confirmara fecha y hora.\"\n      }\n    }\n  }\n};\n\n// --- Contexto de knowledge base ---\nlet knowledgeContext = '';\ntry {\n  const searchData = $input.first().json;\n  if (searchData?.results?.length > 0) {\n    knowledgeContext = '\\n' + CONFIG.knowledge_base.intro + '\\n';\n    for (const result of searchData.results) {\n      if (result.score > CONFIG.knowledge_base.score_threshold) {\n        knowledgeContext += '\\n--- ' + (result.metadata?.title || 'Documento') + ' ---\\n';\n        knowledgeContext += result.text + '\\n';\n      }\n    }\n    knowledgeContext += '\\n' + CONFIG.knowledge_base.outro + '\\n';\n  }\n} catch(e) {}\n\n// --- Construir system prompt desde config ---\nconst id = CONFIG.identity;\nconst tpl = (s) => s.replace(/\\{company\\}/g, id.company)\n                     .replace(/\\{specialties\\}/g, id.specialties.join(', '))\n                     .replace(/\\{name\\}/g, profile?.name || '')\n                     .replace(/\\{email\\}/g, profile?.email || '');\n\nlet sp = `Eres el asistente virtual de *${id.company}*, ${id.description} especializado en ${id.specialties.join(', ')}. Respondes UNICAMENTE por ${id.channel}. Tu tono es ${id.tone}.\\n`;\n\nsp += '\\nREGLAS DE FORMATO (obligatorio):\\n';\nfor (const rule of CONFIG.format_rules) sp += '- ' + rule + '\\n';\n\nsp += '\\nETIQUETAS DE CAPTURA (invisibles para el usuario, siempre al FINAL del mensaje):\\n';\nsp += '- Cuando el usuario te diga su nombre: ' + CONFIG.capture_tags.name_tag + '\\n';\nsp += '- Cuando el usuario te diga su email: ' + CONFIG.capture_tags.email_tag + '\\n';\nsp += '- ' + CONFIG.capture_tags.note + '\\n';\n\nif (CONFIG.message_classification.enabled) {\n  sp += '\\nCLASIFICACION DE MENSAJES:\\n';\n  sp += 'Antes de responder, clasifica internamente el mensaje del usuario:\\n';\n  for (const [type, desc] of Object.entries(CONFIG.message_classification.types)) {\n    sp += `- ${type}: ${desc}\\n`;\n  }\n  sp += CONFIG.message_classification.note + '\\n';\n}\n\nconst hasName = profile?.name;\nconst hasEmail = profile?.email;\nconst ic = interactionCount || 0;\n\nif (!hasName) {\n  const phase = CONFIG.phases.no_name;\n  sp += `\\n=== FASE ACTUAL: ${phase.title} ===\\n`;\n  sp += `Tu OBJETIVO PRINCIPAL es ${phase.objective}.\\n`;\n  for (const c of phase.constraints) sp += c + '\\n';\n  sp += '\\n';\n\n  const strategy = phase.strategies.find(s => s.interaction === ic);\n  if (strategy) {\n    sp += `ESTRATEGIA (${strategy.label}):\\n`;\n    for (const inst of strategy.instructions) sp += '- ' + tpl(inst) + '\\n';\n  } else {\n    const fb = phase.fallback_strategy;\n    sp += `ESTRATEGIA (${fb.label_template.replace('{n}', String(ic + 1))}):\\n`;\n    for (const inst of fb.instructions) sp += '- ' + inst + '\\n';\n    const shouldAsk = ic % 2 !== 0;\n    sp += '- En ESTA interaccion ' + (shouldAsk ? fb.ask_message : fb.skip_message) + '\\n';\n  }\n\n} else if (!hasEmail) {\n  const phase = CONFIG.phases.has_name_no_email;\n  sp += `\\n=== FASE ACTUAL: ${phase.title} ===\\n`;\n  sp += `El usuario se llama *${profile.name}*.\\n`;\n  for (const d of phase.description) sp += '- ' + d + '\\n';\n\n  const apt = phase.appointment;\n  sp += `\\n=== ${apt.title} ===\\n`;\n  sp += 'Busca momentos naturales para sugerirle agendar una consulta con los abogados de ' + id.company + '.\\n';\n  for (const s of apt.suggestions) sp += '- ' + s + '\\n';\n  sp += '- ' + apt.frequency + '\\n';\n\n  sp += '\\n=== CUANDO CONFIRMA QUERER CITA ===\\n';\n  sp += 'Si el usuario dice que SI quiere cita:\\n';\n  for (const step of apt.on_confirm.steps) sp += '- ' + tpl(step) + '\\n';\n  sp += '- Cuando de su email, capturalo con {{EMAIL:correo@ejemplo.com}} y responde:\\n';\n  sp += '  \"' + tpl(apt.on_confirm.on_email_captured) + '\"\\n';\n\n} else {\n  const phase = CONFIG.phases.complete_profile;\n  sp += `\\n=== FASE ACTUAL: ${phase.title} ===\\n`;\n  sp += `El usuario se llama *${profile.name}* y su email es ${profile.email}.\\n`;\n  for (const d of phase.description) sp += '- ' + d + '\\n';\n\n  const apt = phase.appointment;\n  sp += `\\n=== ${apt.title} ===\\n`;\n  for (const inst of apt.instructions) sp += '- ' + inst + '\\n';\n  sp += '- Si dice que SI: \"' + tpl(apt.on_confirm) + '\"\\n';\n}\n\nsp += knowledgeContext;\n\nconst messages = [\n  { role: \"system\", content: sp },\n  ...history,\n  { role: \"user\", content: mensaje }\n];\n\nreturn [{\n  json: {\n    telefono, mensaje, phoneNumberId, profile, interactionCount: ic,\n    openaiBody: { model: CONFIG.model.name, messages, temperature: CONFIG.model.temperature }\n  }\n}];\n"
+      },
+      "id": "39071c00-41f2-482f-8d09-65a8936ef444",
+      "name": "Preparar Mensajes",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4944,
+        2176
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const { telefono, phoneNumberId, respuesta, interactionCount } = $input.first().json;\nconst mensaje = $('Extraer Mensaje').first().json.mensaje;\nconst currentProfile = $('Extraer Mensaje').first().json.profile || { name: null, email: null };\n\nconst nameMatch = respuesta.match(/\\{\\{NAME:([^}]+)\\}\\}/);\nconst emailTagMatch = respuesta.match(/\\{\\{EMAIL:([^}]+)\\}\\}/);\nconst userEmailMatch = mensaje.match(/[\\w.+-]+@[\\w.-]+\\.[a-zA-Z]{2,}/);\n\nconst profile = { ...currentProfile };\nif (nameMatch) profile.name = nameMatch[1].trim();\nif (emailTagMatch) {\n  profile.email = emailTagMatch[1].trim();\n} else if (userEmailMatch && !currentProfile.email) {\n  profile.email = userEmailMatch[0];\n}\n\nconst respuestaWA = respuesta\n  .replace(/\\{\\{NAME:[^}]+\\}\\}/g, '')\n  .replace(/\\{\\{EMAIL:[^}]+\\}\\}/g, '')\n  .replace(/\\*\\*([^*]+)\\*\\*/g, '*$1*')\n  .replace(/[\\u200B\\u200C\\u200D\\u2060\\uFEFF\\u00AD]/g, '')\n  .trim();\n\nlet workflowData, key, history;\ntry {\n  workflowData = $getWorkflowStaticData('global');\n  key = `hist_${telefono}`;\n  history = (workflowData[key] || []).map(msg => ({\n    ...msg,\n    content: msg.content.replace(/\\*\\*([^*]+)\\*\\*/g, '*$1*')\n  }));\n  history.push({ role: 'user', content: mensaje });\n  history.push({ role: 'assistant', content: respuestaWA });\n  if (history.length > 20) history.splice(0, history.length - 20);\n  workflowData[key] = history;\n  workflowData[`profile_${telefono}`] = profile;\n  if (nameMatch) {\n    workflowData[`ic_${telefono}`] = 0;\n  } else if (!currentProfile.name) {\n    workflowData[`ic_${telefono}`] = (interactionCount || 0) + 1;\n  }\n} catch(e) {}\n\n// --- Atlas CRM: preparar datos si email es nuevo ---\nconst emailJustCaptured = (!!emailTagMatch || (!!userEmailMatch && !currentProfile.email)) && !!profile.name && !!profile.email;\nlet atlasContactBody = null;\nlet atlasLeadBody = null;\n\nif (emailJustCaptured) {\n  const nameParts = (profile.name || '').split(' ');\n  const firstName = nameParts[0] || '';\n  const lastName = nameParts.slice(1).join(' ') || '';\n\n  let convNotes = '';\n  for (const msg of history.slice(-6)) {\n    const prefix = msg.role === 'user' ? 'Usuario' : 'Bot';\n    convNotes += prefix + ': ' + msg.content.substring(0, 200) + '\\n';\n  }\n\n  atlasContactBody = {\n    first_name: firstName,\n    last_name: lastName,\n    email: profile.email,\n    phone: '+' + telefono,\n    source_detail: 'WhatsApp Bot',\n    tags: ['whatsapp', 'consulta-legal'],\n    notes: convNotes || 'Contacto capturado desde WhatsApp Bot de Atrea'\n  };\n\n  atlasLeadBody = {\n    title: 'Consulta Legal - ' + profile.name,\n    priority: 'medium',\n    currency: 'EUR',\n    notes: 'Lead generado desde WhatsApp Bot. ' + (convNotes ? convNotes.substring(0, 500) : '')\n  };\n}\n\nconst waBodyObj = {\n  messaging_product: 'whatsapp',\n  to: telefono,\n  type: 'text',\n  text: { body: respuestaWA }\n};\n\nreturn [{ json: {\n  telefono, phoneNumberId, respuesta: respuestaWA, waBodyObj, profile,\n  emailJustCaptured, atlasContactBody, atlasLeadBody\n} }];\n"
+      },
+      "id": "45e52501-b2f8-4ad8-9e0d-4cd8325485b5",
+      "name": "Guardar Historial",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5616,
+        2176
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:8000/api/v1/search/knowledge/",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "iris_3MLaAQiUSF-9sk-g1pDSH605Lf8N1-sNSp4IL_IzsofmvivBlNG92wXh"
+            },
+            {
+              "name": "Host",
+              "value": "localhost:8000"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.searchBody }}",
+        "options": {}
+      },
+      "id": "e4710f1b-f5ef-4d99-b6f9-19232435696d",
+      "name": "Encontrar en Iris",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4720,
+        2176
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst results = [];\nfor (const item of items) {\n  if (item.json.emailJustCaptured && item.json.atlasContactBody) {\n    results.push(item);\n  }\n}\nreturn results;\n"
+      },
+      "id": "80ef9355-9900-4e22-9c14-dcb0bb1eadc1",
+      "name": "Verificar Email Nuevo",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5616,
+        2432
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:8001/api/contacts/capture/",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "atlas_GRLmNRLeVBD6rTL-86mEa9c0yUWjbGOtBRIq7S8YOOLpWXT29BUYeNqt"
+            },
+            {
+              "name": "Host",
+              "value": "localhost:8001"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.atlasContactBody }}",
+        "options": {}
+      },
+      "id": "f8765abb-f3d4-4c61-9015-7ca36625b930",
+      "name": "Capturar Contacto Atlas",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5840,
+        2432
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=http://host.docker.internal:8001/api/contacts/{{ $json.contact_id }}/convert-to-lead/",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "atlas_GRLmNRLeVBD6rTL-86mEa9c0yUWjbGOtBRIq7S8YOOLpWXT29BUYeNqt"
+            },
+            {
+              "name": "Host",
+              "value": "localhost:8001"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $('Verificar Email Nuevo').first().json.atlasLeadBody }}",
+        "options": {}
+      },
+      "id": "e27731ff-a641-46eb-9e40-b1c21ea59680",
+      "name": "Convertir Lead Atlas",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        6064,
+        2432
+      ],
+      "onError": "continueRegularOutput"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook GET Verificacion": {
+      "main": [
+        [
+          {
+            "node": "Verificar Token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar Token": {
+      "main": [
+        [
+          {
+            "node": "Responder Verificacion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook POST Mensajes": {
+      "main": [
+        [
+          {
+            "node": "Extraer Mensaje",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extraer Mensaje": {
+      "main": [
+        [
+          {
+            "node": "Tiene Mensaje?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tiene Mensaje?": {
+      "main": [
+        [
+          {
+            "node": "Encontrar en Iris",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Mensajes": {
+      "main": [
+        [
+          {
+            "node": "Llamar OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Llamar OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Parsear Respuesta OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parsear Respuesta OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Guardar Historial",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guardar Historial": {
+      "main": [
+        [
+          {
+            "node": "Verificar Email Nuevo",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Enviar Respuesta WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Encontrar en Iris": {
+      "main": [
+        [
+          {
+            "node": "Preparar Mensajes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar Email Nuevo": {
+      "main": [
+        [
+          {
+            "node": "Capturar Contacto Atlas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Capturar Contacto Atlas": {
+      "main": [
+        [
+          {
+            "node": "Convertir Lead Atlas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Responder Verificacion": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "14f8a5a2-9b26-4476-a701-5208e4af458b",
+  "meta": {
+    "instanceId": "9700929648fa2b0cbe3f59a1996da684419006666079a819f9f74ef9ec081b74"
+  },
+  "id": "xLSEBqvXZiE8bkyY",
+  "tags": []
+}

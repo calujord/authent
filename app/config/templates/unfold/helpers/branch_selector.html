@@ -1,0 +1,32 @@
+{% load i18n %}
+
+{% if user_branches %}
+<div class="border-t border-gray-200 dark:border-gray-700">
+    {% for membership in user_branches %}
+    <a 
+        href="/admin/set-active-branch/{{ membership.branch.id }}/"
+        class="flex items-center justify-between px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors {% if membership.branch.id == active_branch_id %}bg-gray-50 dark:bg-gray-800{% endif %}"
+    >
+        <div class="flex items-center gap-3 flex-1">
+            {% if membership.branch.business.logo %}
+            <img 
+                src="{{ membership.branch.business.logo.url }}" 
+                alt="{{ membership.branch.business.name }}" 
+                class="w-8 h-8 rounded-full object-cover flex-shrink-0"
+            >
+            {% else %}
+            <div class="w-8 h-8 rounded-full bg-primary-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+                {{ membership.branch.business.name|slice:":1"|upper }}
+            </div>
+            {% endif %}
+            <span class="text-sm text-gray-900 dark:text-gray-100 font-medium">
+                {{ membership.branch.name }}
+            </span>
+        </div>
+        <span class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider ml-2 flex-shrink-0">
+            {{ membership.branch.business.name|slice:":2"|upper }}
+        </span>
+    </a>
+    {% endfor %}
+</div>
+{% endif %}

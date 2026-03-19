@@ -1,0 +1,14 @@
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+[tool.ruff.lint]
+select = [
+    "F",    # Pyflakes (F401 = unused imports)
+    "I",    # isort
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["core", "users", "business", "subscriptions", "bridge", "config", "hub"]

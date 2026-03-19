@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aceptar Invitación - Atlas</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+    <style>{% include 'invitation_styles.html' %}</style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1><span class="material-icons" style="font-size: 48px; vertical-align: middle;">celebration</span> Invitación a Atlas</h1>
+        <p>Has sido invitado a unirte al equipo</p>
+      </div>
+
+      <div class="content">
+        <!-- Invitation Details -->
+        <div class="invitation-details">
+          <h3><span class="material-icons" style="font-size: 20px; vertical-align: middle;">info</span> Detalles de la Invitación</h3>
+          <div class="detail-item">
+            <span class="detail-label">Email:</span>
+            <span class="detail-value">{{ invitation.email }}</span>
+          </div>
+          {% if invitation.branches.all %}
+          <div class="detail-item">
+            <span class="detail-label">Sucursales:</span>
+            <span class="detail-value">{% for branch in invitation.branches.all %}{{ branch.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</span>
+          </div>
+          {% endif %}
+          <div class="detail-item">
+            <span class="detail-label">Rol:</span>
+            <span class="detail-value">{{ invitation.get_role_display }}</span>
+          </div>
+          {% if invitation.invited_by %}
+          <div class="detail-item">
+            <span class="detail-label">Invitado por:</span>
+            <span class="detail-value"
+              >{{ invitation.invited_by.get_full_name }}</span
+            >
+          </div>
+          {% endif %}
+        </div>
+
+        {% if user_exists %}
+        <!-- User Already Exists -->
+        <div class="existing-user-message">
+          <p><strong>¡Ya tienes una cuenta registrada!</strong></p>
+          <p>
+            Por favor descarga la aplicación e inicia sesión con tu email:
+            <strong>{{ invitation.email }}</strong>
+          </p>
+        </div>
+
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="token" value="{{ token }}" />
+          <button type="submit" class="button button-primary">Continuar</button>
+        </form>
+        {% else %}
+        <!-- Registration Form for New Users -->
+        <form method="post" novalidate>
+          {% csrf_token %} {% if form.non_field_errors %}
+          <div class="non-field-errors">{{ form.non_field_errors }}</div>
+          {% endif %}
+
+          <!-- Hidden token field -->
+          {{ form.token }}
+
+          <!-- First Name -->
+          <div class="form-group">
+            <label for="{{ form.first_name.id_for_label }}">
+              {{ form.first_name.label }} <span style="color: #dc3545">*</span>
+            </label>
+            {{ form.first_name }} {% if form.first_name.errors %} {{
+            form.first_name.errors }} {% endif %}
+          </div>
+
+          <!-- Last Name -->
+          <div class="form-group">
+            <label for="{{ form.last_name.id_for_label }}">
+              {{ form.last_name.label }} <span style="color: #dc3545">*</span>
+            </label>
+            {{ form.last_name }} {% if form.last_name.errors %} {{
+            form.last_name.errors }} {% endif %}
+          </div>
+
+          <!-- Password -->
+          <div class="form-group">
+            <label for="{{ form.password.id_for_label }}">
+              {{ form.password.label }} <span style="color: #dc3545">*</span>
+            </label>
+            {{ form.password }} {% if form.password.help_text %}
+            <span class="help-text">{{ form.password.help_text }}</span>
+            {% endif %} {% if form.password.errors %} {{ form.password.errors }}
+            {% endif %}
+          </div>
+
+          <!-- Password Confirm -->
+          <div class="form-group">
+            <label for="{{ form.password_confirm.id_for_label }}">
+              {{ form.password_confirm.label }}
+              <span style="color: #dc3545">*</span>
+            </label>
+            {{ form.password_confirm }} {% if form.password_confirm.errors %} {{
+            form.password_confirm.errors }} {% endif %}
+          </div>
+
+          <!-- Phone Number -->
+          <div class="form-group">
+            <label for="{{ form.phone_number.id_for_label }}">
+              {{ form.phone_number.label }}
+            </label>
+            {{ form.phone_number }} {% if form.phone_number.errors %} {{
+            form.phone_number.errors }} {% endif %}
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="button button-primary">
+            ✓ Aceptar Invitación y Crear Cuenta
+          </button>
+        </form>
+        {% endif %}
+      </div>
+
+      <div class="footer">
+        &copy; 2026 Atlas. Todos los derechos reservados.
+      </div>
+    </div>
+  </body>
+</html>

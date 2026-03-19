@@ -1,0 +1,23 @@
+{% load i18n unfold static %}
+
+<div class="user-menu-container">
+  {% if request.user.avatar %}
+  <img
+    src="{{ request.user.avatar.url }}"
+    alt="{{ request.user.get_full_name }}"
+    class="user-avatar"
+    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+  />
+  <div class="user-avatar-placeholder" style="display: none;">
+    {{ request.user.first_name.0|upper }}{{ request.user.last_name.0|upper }}
+  </div>
+  {% else %}
+  <div class="user-avatar-placeholder">
+    {{ request.user.first_name.0|upper }}{{ request.user.last_name.0|upper }}
+  </div>
+  {% endif %}
+  <div class="user-info">
+    <span class="user-name">{{ request.user.get_full_name }}</span>
+    <span class="user-email">{{ request.user.email }}</span>
+  </div>
+</div>

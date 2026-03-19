@@ -1,0 +1,112 @@
+name: authent
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: authent_db
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    command: >
+      postgres
+        -c shared_buffers=512MB
+        -c effective_cache_size=1536MB
+        -c work_mem=32MB
+        -c maintenance_work_mem=128MB
+        -c max_connections=200
+        -c checkpoint_completion_target=0.9
+        -c wal_buffers=16MB
+        -c random_page_cost=1.1
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - authent_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: authent_redis
+    command: redis-server --maxmemory 128mb --maxmemory-policy allkeys-lru
+    ports:
+      - "${REDIS_EXTERNAL_PORT:-6390}:6379"
+    deploy:
+      resources:
+        limits:
+          memory: 150M
+    networks:
+      - authent_network
+
+  web:
+    build:
+      context: .
+      dockerfile: app/Dockerfile
+    container_name: authent_web
+    command: ./start-web.sh
+    volumes:
+      - ./app:/app
+      - ./fixtures:/app/fixtures
+      - static_volume:/app/config/staticfiles
+      - media_volume:/app/config/media
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings.${ENVIRONMENT}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: db
+      DB_PORT: 5432
+      USE_S3: "${USE_S3}"
+      AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
+      AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
+      AWS_STORAGE_BUCKET_NAME: "${AWS_STORAGE_BUCKET_NAME}"
+      AWS_S3_REGION_NAME: "${AWS_S3_REGION_NAME}"
+    env_file:
+      - .env
+      - app/envs/${ENVIRONMENT}.env
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - authent_network
+
+  nginx:
+    build: ./nginx
+    container_name: authent_nginx
+    ports:
+      - "${WEB_PORT}:80"
+    volumes:
+      - static_volume:/app/config/staticfiles:ro
+      - media_volume:/app/config/media:ro
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+    depends_on:
+      - web
+    networks:
+      - authent_network
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:
+
+networks:
+  authent_network:
+    driver: bridge

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>¡Registro Exitoso! - Atlas</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+    <style>{% include 'invitation_styles.html' %}</style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="success-header">
+        <span class="material-icons success-icon">check_circle</span>
+        <h1>¡Registro Exitoso!</h1>
+        <p>Tu cuenta ha sido creada correctamente</p>
+      </div>
+
+      <div class="content">
+        {% if message %}
+        <div class="message-box">{{ message }}</div>
+        {% endif %}
+
+        <div class="app-download">
+          <h2><span class="material-icons" style="vertical-align: middle;">phone_android</span> Descarga la App Atlas</h2>
+          <div class="download-buttons">
+            <a href="https://apps.apple.com/app/atlas" class="download-btn">
+              <span>📲</span>
+              <span>App Store</span>
+            </a>
+            <a
+              href="https://play.google.com/store/apps/details?id=com.atlas"
+              class="download-btn"
+            >
+              <span>📲</span>
+              <span>Google Play</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="credentials-box">
+          <h3><span class="material-icons" style="font-size: 20px; vertical-align: middle;">vpn_key</span> Tus Credenciales de Acceso</h3>
+          <div class="credential-item">
+            <span class="credential-label">Email:</span>
+            <span class="credential-value">{{ user.email }}</span>
+          </div>
+          <div class="credential-item">
+            <span class="credential-label">Contraseña:</span>
+            <span class="credential-value">La que acabas de crear</span>
+          </div>
+        </div>
+
+        <div class="next-steps">
+          <h3><span class="material-icons" style="font-size: 20px; vertical-align: middle;">assignment</span> Próximos Pasos</h3>
+          <ol>
+            <li>
+              <strong>Descarga la aplicación</strong> desde App Store o Google
+              Play
+            </li>
+            <li><strong>Inicia sesión</strong> con tu email y contraseña</li>
+            <li>
+              <strong>¡Comienza a usar Atlas!</strong> y accede a todas las
+              funcionalidades
+            </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="footer">
+        &copy; 2026 Atlas. Todos los derechos reservados.
+      </div>
+    </div>
+  </body>
+</html>

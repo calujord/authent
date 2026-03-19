@@ -1,0 +1,11 @@
+Hi {{ user_name }},
+
+Use the 6-digit code below to verify your email address in the Atlas app.
+
+Your verification code: {{ code }}
+
+This code expires in 15 minutes. You have a maximum of 5 attempts.
+
+If you did not create an account, you can safely ignore this email.
+
+— The {{ site_name }} Team

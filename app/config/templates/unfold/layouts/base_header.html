@@ -1,0 +1,25 @@
+{% extends "unfold/layouts/base_header.html" %}
+{% load i18n unfold static %}
+
+{% block header_user %}
+<div class="flex items-center gap-3 px-4">
+  {% if request.user.is_authenticated %}
+    {% if request.user.avatar %}
+      <img
+        src="{{ request.user.avatar.url }}"
+        alt="{{ request.user.get_full_name }}"
+        class="w-10 h-10 rounded-full object-cover border-2 border-primary-500 shadow-sm"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+      />
+      <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white font-semibold shadow-sm" style="display: none;">
+        {{ request.user.first_name.0|upper }}{{ request.user.last_name.0|upper }}
+      </div>
+    {% else %}
+      <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white font-semibold shadow-sm">
+        {{ request.user.first_name.0|upper }}{{ request.user.last_name.0|upper }}
+      </div>
+    {% endif %}
+  {% endif %}
+  {{ block.super }}
+</div>
+{% endblock %}

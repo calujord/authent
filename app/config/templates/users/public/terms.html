@@ -1,0 +1,147 @@
+{% extends "users/public/base.html" %}
+
+{% block meta_description %}Términos y Condiciones de Atlas, plataforma de gestión empresarial de Atlas Care.{% endblock %}
+
+{% block og_description %}Términos y Condiciones de Atlas, plataforma de gestión empresarial.{% endblock %}
+
+{% block twitter_description %}Términos y Condiciones de Atlas, plataforma de gestión empresarial.{% endblock %}
+
+{% block content %}
+    {% if language == 'es' %}
+        <h1>Términos y Condiciones</h1>
+    {% elif language == 'en' %}
+        <h1>Terms and Conditions</h1>
+    {% elif language == 'pt' %}
+        <h1>Termos e Condições</h1>
+    {% elif language == 'fr' %}
+        <h1>Conditions Générales</h1>
+    {% elif language == 'it' %}
+        <h1>Termini e Condizioni</h1>
+    {% else %}
+        <h1>Términos y Condiciones</h1>
+    {% endif %}
+
+    {% if terms %}
+        <div class="meta-info">
+            <h3><span class="material-icons">info</span> Información del Documento</h3>
+            {% if language == 'es' %}
+                <p><span class="material-icons">tag</span> <strong>Versión:</strong> {{ terms.version }}</p>
+                <p><span class="material-icons">calendar_today</span> <strong>Fecha de entrada en vigor:</strong> {{ terms.created_at|date:"d/m/Y" }}</p>
+                <p><span class="material-icons">update</span> <strong>Última actualización:</strong> {{ terms.updated_at|date:"d/m/Y" }}</p>
+            {% elif language == 'en' %}
+                <p><span class="material-icons">tag</span> <strong>Version:</strong> {{ terms.version }}</p>
+                <p><span class="material-icons">calendar_today</span> <strong>Effective date:</strong> {{ terms.created_at|date:"m/d/Y" }}</p>
+                <p><span class="material-icons">update</span> <strong>Last updated:</strong> {{ terms.updated_at|date:"m/d/Y" }}</p>
+            {% elif language == 'pt' %}
+                <p><span class="material-icons">tag</span> <strong>Versão:</strong> {{ terms.version }}</p>
+                <p><span class="material-icons">calendar_today</span> <strong>Data de vigência:</strong> {{ terms.created_at|date:"d/m/Y" }}</p>
+                <p><span class="material-icons">update</span> <strong>Última atualização:</strong> {{ terms.updated_at|date:"d/m/Y" }}</p>
+            {% elif language == 'fr' %}
+                <p><span class="material-icons">tag</span> <strong>Version :</strong> {{ terms.version }}</p>
+                <p><span class="material-icons">calendar_today</span> <strong>Date d'entrée en vigueur :</strong> {{ terms.created_at|date:"d/m/Y" }}</p>
+                <p><span class="material-icons">update</span> <strong>Dernière mise à jour :</strong> {{ terms.updated_at|date:"d/m/Y" }}</p>
+            {% elif language == 'it' %}
+                <p><span class="material-icons">tag</span> <strong>Versione:</strong> {{ terms.version }}</p>
+                <p><span class="material-icons">calendar_today</span> <strong>Data di entrata in vigore:</strong> {{ terms.created_at|date:"d/m/Y" }}</p>
+                <p><span class="material-icons">update</span> <strong>Ultimo aggiornamento:</strong> {{ terms.updated_at|date:"d/m/Y" }}</p>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <!-- Content with proper HTML rendering -->
+    {% if content %}
+        <div class="content-section">
+            {{ content|safe }}
+        </div>
+    {% else %}
+        <div class="content-placeholder">
+            {% if language == 'es' %}
+                <p><span class="material-icons">error_outline</span> Los términos y condiciones no están disponibles en este momento.</p>
+            {% elif language == 'en' %}
+                <p><span class="material-icons">error_outline</span> Terms and conditions are not available at this time.</p>
+            {% elif language == 'pt' %}
+                <p><span class="material-icons">error_outline</span> Os termos e condições não estão disponíveis no momento.</p>
+            {% elif language == 'fr' %}
+                <p><span class="material-icons">error_outline</span> Les conditions générales ne sont pas disponibles pour le moment.</p>
+            {% elif language == 'it' %}
+                <p><span class="material-icons">error_outline</span> I termini e le condizioni non sono disponibili al momento.</p>
+            {% else %}
+                <p><span class="material-icons">error_outline</span> Los términos y condiciones no están disponibles en este momento.</p>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <!-- Platform Description -->
+    <div class="feature-section">
+        {% if language == 'es' %}
+            <h3><span class="material-icons">medical_services</span> Acerca de Atlas</h3>
+            <p><strong>Atlas</strong> es una plataforma especializada en gestión empresarial pediátrica que utiliza <em>inteligencia artificial</em> para mejorar la operaciones empresariales. Desarrollada por <strong>Atlas Care</strong>, ofrece herramientas avanzadas para negocios especializadas en pediatría.</p>
+            <h4><span class="material-icons">auto_awesome</span> Características principales:</h4>
+            <ul class="feature-list">
+                <li><span class="material-icons">smart_toy</span> Análisis de imágenes radiográficas con IA</li>
+                <li><span class="material-icons">analytics</span> Gestión integral de historiales clínicos</li>
+                <li><span class="material-icons">child_care</span> Especialización en odontología pediátrica</li>
+                <li><span class="material-icons">security</span> Cumplimiento de normativas de protección de datos</li>
+            </ul>
+        {% elif language == 'en' %}
+            <h3><span class="material-icons">medical_services</span> About Atlas</h3>
+            <p><strong>Atlas</strong> is a specialized pediatric business management platform that uses <em>artificial intelligence</em> to improve children's business operations. Developed by <strong>Atlas Care</strong>, it offers advanced tools for businesses specialized in pediatrics.</p>
+            <h4><span class="material-icons">auto_awesome</span> Key Features:</h4>
+            <ul class="feature-list">
+                <li><span class="material-icons">smart_toy</span> AI-powered radiographic image analysis</li>
+                <li><span class="material-icons">analytics</span> Comprehensive clinical records management</li>
+                <li><span class="material-icons">child_care</span> Pediatric dentistry specialization</li>
+                <li><span class="material-icons">security</span> Data protection compliance</li>
+            </ul>
+        {% elif language == 'pt' %}
+            <h3><span class="material-icons">medical_services</span> Sobre o Atlas</h3>
+            <p><strong>Atlas</strong> é uma plataforma especializada em gestão odontológica pediátrica que usa <em>inteligência artificial</em> para melhorar o atendimento odontológico infantil. Desenvolvida pela <strong>Atlas Care</strong>, oferece ferramentas avançadas para clínicas odontológicas especializadas em pediatria.</p>
+            <h4><span class="material-icons">auto_awesome</span> Características principais:</h4>
+            <ul class="feature-list">
+                <li><span class="material-icons">smart_toy</span> Análise de imagens radiográficas com IA</li>
+                <li><span class="material-icons">analytics</span> Gestão integral de históricos clínicos</li>
+                <li><span class="material-icons">child_care</span> Especialização em odontologia pediátrica</li>
+                <li><span class="material-icons">security</span> Conformidade com regulamentos de proteção de dados</li>
+            </ul>
+        {% elif language == 'fr' %}
+            <h3><span class="material-icons">medical_services</span> À propos de Atlas</h3>
+            <p><strong>Atlas</strong> est une plateforme spécialisée dans la gestion dentaire pédiatrique qui utilise l'<em>intelligence artificielle</em> pour améliorer les soins dentaires pour enfants. Développée par <strong>Atlas Care</strong>, elle offre des outils avancés pour les cliniques dentaires spécialisées en pédiatrie.</p>
+            <h4><span class="material-icons">auto_awesome</span> Caractéristiques principales :</h4>
+            <ul class="feature-list">
+                <li><span class="material-icons">smart_toy</span> Analyse d'images radiographiques par IA</li>
+                <li><span class="material-icons">analytics</span> Gestion intégrale des dossiers cliniques</li>
+                <li><span class="material-icons">child_care</span> Spécialisation en dentisterie pédiatrique</li>
+                <li><span class="material-icons">security</span> Conformité aux réglementations de protection des données</li>
+            </ul>
+        {% elif language == 'it' %}
+            <h3><span class="material-icons">medical_services</span> Informazioni su Atlas</h3>
+            <p><strong>Atlas</strong> è una piattaforma specializzata nella gestione aziendale che utilizza l'<em>intelligenza artificiale</em> per migliorare l'assistenza dentale per bambini. Sviluppata da <strong>Atlas Care</strong>, offre strumenti avanzati per cliniche aziende.</p>
+            <h4><span class="material-icons">auto_awesome</span> Caratteristiche principali:</h4>
+            <ul class="feature-list">
+                <li><span class="material-icons">smart_toy</span> Analisi di immagini radiografiche con IA</li>
+                <li><span class="material-icons">analytics</span> Gestione integrale delle cartelle cliniche</li>
+                <li><span class="material-icons">child_care</span> Specializzazione in odontoiatria pediatrica</li>
+                <li><span class="material-icons">security</span> Conformità alle normative di protezione dei dati</li>
+            </ul>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block version_info %}
+    {% if terms %}
+        <div class="version-info">
+            <span class="material-icons">description</span>
+            {% if language == 'es' %}
+                <p>Documento generado automáticamente • Versión {{ terms.version }} • {{ terms.created_at|date:"d/m/Y" }}</p>
+            {% elif language == 'en' %}
+                <p>Automatically generated document • Version {{ terms.version }} • {{ terms.created_at|date:"m/d/Y" }}</p>
+            {% elif language == 'pt' %}
+                <p>Documento gerado automaticamente • Versão {{ terms.version }} • {{ terms.created_at|date:"d/m/Y" }}</p>
+            {% elif language == 'fr' %}
+                <p>Document généré automatiquement • Version {{ terms.version }} • {{ terms.created_at|date:"d/m/Y" }}</p>
+            {% elif language == 'it' %}
+                <p>Documento generato automaticamente • Versione {{ terms.version }} • {{ terms.created_at|date:"d/m/Y" }}</p>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}

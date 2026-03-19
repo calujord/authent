@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bienvenido a {{ site_name }}</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+        background-color: #f0f2f5;
+        color: #1a1a2e;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+      }
+      .header {
+        background: linear-gradient(135deg, #1a1a2e, #16213e);
+        color: white;
+        padding: 40px 30px;
+        text-align: center;
+      }
+      .header-icon {
+        display: inline-block;
+        background-color: rgba(0, 212, 170, 0.15);
+        border-radius: 50%;
+        padding: 16px;
+        margin-bottom: 16px;
+      }
+      .header-icon .material-icons {
+        font-size: 48px;
+        color: #00d4aa;
+        vertical-align: middle;
+      }
+      .header h1 {
+        font-size: 26px;
+        margin: 0 0 8px 0;
+        color: #ffffff;
+      }
+      .header p {
+        margin: 0;
+        color: #a0aec0;
+        font-size: 14px;
+      }
+      .content {
+        background-color: #ffffff;
+        padding: 32px 30px;
+      }
+      .greeting {
+        font-size: 20px;
+        font-weight: bold;
+        color: #1a1a2e;
+        margin-bottom: 8px;
+      }
+      .features-box {
+        background-color: #f8f9fa;
+        border-left: 4px solid #00d4aa;
+        border-radius: 0 8px 8px 0;
+        padding: 20px 24px;
+        margin: 24px 0;
+      }
+      .features-box h3 {
+        margin: 0 0 16px 0;
+        font-size: 15px;
+        color: #1a1a2e;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .features-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .features-list li {
+        padding: 7px 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+        color: #4a5568;
+      }
+      .features-list li .material-icons {
+        font-size: 18px;
+        color: #00d4aa;
+      }
+      .cta-button {
+        display: inline-block;
+        background-color: #00d4aa;
+        color: #1a1a2e;
+        padding: 13px 30px;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: bold;
+        font-size: 15px;
+        margin: 8px 0 24px 0;
+      }
+      .info-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+      .info-row .material-icons {
+        font-size: 22px;
+        color: #00d4aa;
+        margin-top: 2px;
+        flex-shrink: 0;
+      }
+      .info-row h3 {
+        margin: 0 0 4px 0;
+        font-size: 15px;
+        color: #1a1a2e;
+      }
+      .info-row p, .info-row ul {
+        margin: 0;
+        font-size: 14px;
+        color: #4a5568;
+      }
+      .info-row ul {
+        padding-left: 16px;
+      }
+      .divider {
+        border: none;
+        border-top: 1px solid #e2e8f0;
+        margin: 24px 0;
+      }
+      .footer {
+        background-color: #1a1a2e;
+        padding: 20px 30px;
+        text-align: center;
+        font-size: 12px;
+        color: #718096;
+      }
+      .footer a {
+        color: #00d4aa;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+
+      <div class="header">
+        <div class="header-icon">
+          <span class="material-icons">medical_services</span>
+        </div>
+        <h1>Bienvenido a {{ site_name }}</h1>
+        <p>Tu cuenta ha sido creada exitosamente</p>
+      </div>
+
+      <div class="content">
+        <p class="greeting">Hola, {{ user_name }}</p>
+        <p style="color:#4a5568; font-size:15px; margin-top:4px;">
+          Estamos encantados de tenerte en nuestra comunidad. Tu acceso a la plataforma de gestión dental con IA ya está activo.
+        </p>
+
+        <div class="features-box">
+          <h3>Lo que puedes hacer ahora</h3>
+          <ul class="features-list">
+            <li><span class="material-icons">groups</span> Gestionar tu clínica y equipo de trabajo</li>
+            <li><span class="material-icons">calendar_month</span> Programar y hacer seguimiento de citas</li>
+            <li><span class="material-icons">psychology</span> Acceder al análisis radiográfico con IA</li>
+            <li><span class="material-icons">bar_chart</span> Generar informes y estadísticas clínicas</li>
+            <li><span class="material-icons">folder_shared</span> Gestionar historiales de pacientes de forma segura</li>
+          </ul>
+        </div>
+
+        <div style="text-align: center;">
+          <a href="#" class="cta-button">Empezar ahora</a>
+        </div>
+
+        <hr class="divider" />
+
+        <div class="info-row">
+          <span class="material-icons">security</span>
+          <div>
+            <h3>Seguridad ante todo</h3>
+            <p>Toda tu información está cifrada y almacenada de forma segura conforme a los estándares del sector sanitario.</p>
+          </div>
+        </div>
+
+        <div class="info-row">
+          <span class="material-icons">support_agent</span>
+          <div>
+            <h3>Soporte disponible</h3>
+            <ul>
+              <li>Email: soporte@atlas.com</li>
+              <li>Centro de ayuda: atlas.com/help</li>
+              <li>Chat en vivo desde tu panel de control</li>
+            </ul>
+          </div>
+        </div>
+
+        <hr class="divider" />
+
+        <p style="font-size:14px; color:#4a5568;">
+          Gracias por elegir {{ site_name }}. Estamos aquí para ayudarte a llevar tu clínica al siguiente nivel.
+        </p>
+        <p style="font-size:14px; color:#4a5568;">
+          Un saludo,<br /><strong>El equipo de {{ site_name }}</strong>
+        </p>
+      </div>
+
+      <div class="footer">
+        <p>Este es un correo automático, por favor no respondas a este mensaje.</p>
+        <p>&copy; 2026 {{ site_name }} &mdash; <a href="mailto:soporte@atlas.com">soporte@atlas.com</a></p>
+      </div>
+
+    </div>
+  </body>
+</html>

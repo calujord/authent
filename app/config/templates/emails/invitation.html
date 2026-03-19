@@ -1,0 +1,68 @@
+{% extends "emails/base.html" %}
+{% load i18n %}
+
+{% block title %}Invitation to join {{ business.name }}{% endblock %}
+
+{% block tagline %}
+    {% blocktrans %}Team Collaboration Platform{% endblocktrans %}
+{% endblock %}
+
+{% block content %}
+    <h1>{% blocktrans %}You've been invited!{% endblocktrans %}</h1>
+    
+    <p>{% blocktrans %}Hello,{% endblocktrans %}</p>
+    
+    <p>
+        {% if invited_by %}
+            <strong>{{ invited_by.get_full_name }}</strong>
+        {% else %}
+            {% blocktrans %}The team at{% endblocktrans %} <strong>{{ business.name }}</strong>
+        {% endif %}
+        {% blocktrans %}has invited you to join as{% endblocktrans %} <strong>{{ role_display }}</strong>:
+    </p>
+    
+    <div class="info-box">
+        <p style="margin: 8px 0;"><strong>🏢 {% blocktrans %}Business:{% endblocktrans %}</strong> {{ business.name }}</p>
+        <p style="margin: 8px 0;"><strong>📍 {% blocktrans %}Branch:{% endblocktrans %}</strong> {{ branch.name }}</p>
+        {% if branch.address %}
+        <p style="margin: 8px 0;"><strong>📌 {% blocktrans %}Location:{% endblocktrans %}</strong> {{ branch.city }}, {{ branch.state }}</p>
+        {% endif %}
+        <p style="margin: 8px 0;"><strong>👤 {% blocktrans %}Role:{% endblocktrans %}</strong> {{ role_display }}</p>
+    </div>
+    
+    {% if invitation.message %}
+    <div class="warning-box">
+        <p style="margin: 0;"><strong>{% blocktrans %}Personal message:{% endblocktrans %}</strong></p>
+        <p style="margin: 10px 0 0 0; font-style: italic;">{{ invitation.message }}</p>
+    </div>
+    {% endif %}
+    
+    <div style="text-align: center; margin: 30px 0;">
+        <a href="{{ invitation_url }}" class="button">
+            ✅ {% blocktrans %}Accept Invitation{% endblocktrans %}
+        </a>
+    </div>
+    
+    <p style="font-size: 14px; color: #7f8c8d;">
+        {% blocktrans %}Or copy and paste this link in your browser:{% endblocktrans %}
+    </p>
+    <p style="word-break: break-all; font-size: 12px; color: #7f8c8d; background-color: #f8f9fa; padding: 10px; border-radius: 4px;">
+        {{ invitation_url }}
+    </p>
+    
+    <div class="warning-box">
+        <p style="margin: 0; color: #e74c3c;">
+            ⚠️ {% blocktrans %}This invitation expires on{% endblocktrans %} {{ invitation.expires_at|date:"SHORT_DATE_FORMAT" }} {% blocktrans %}at{% endblocktrans %} {{ invitation.expires_at|time:"H:i" }}
+        </p>
+    </div>
+    
+    <p style="margin-top: 30px; color: #7f8c8d; font-size: 14px;">
+        {% blocktrans %}If you weren't expecting this invitation, you can safely ignore this email.{% endblocktrans %}
+    </p>
+{% endblock %}
+
+{% block footer_text %}
+    {% blocktrans %}This is an automated email, please do not reply to this message.{% endblocktrans %}
+    <br>
+    &copy; {{ business.name }} - {% blocktrans %}All rights reserved{% endblocktrans %}
+{% endblock %}

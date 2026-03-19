@@ -1,0 +1,31 @@
+<svg width="40" height="40" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Tooth icon for dark mode -->
+  <defs>
+    <linearGradient id="toothGradientDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#5dd3c0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#14b8a6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Main tooth body -->
+  <path d="M100 40 C85 40 75 50 75 65 L75 115 C75 130 85 150 100 170 C115 150 125 130 125 115 L125 65 C125 50 115 40 100 40 Z" 
+        fill="url(#toothGradientDark)" 
+        stroke="#5dd3c0" 
+        stroke-width="2"/>
+  
+  <!-- Left root -->
+  <path d="M100 170 C95 175 88 178 82 178 C76 178 72 175 72 170 L72 145 C72 138 76 134 82 134 C88 134 95 138 100 145 Z" 
+        fill="url(#toothGradientDark)"/>
+  
+  <!-- Right root -->
+  <path d="M100 170 C105 175 112 178 118 178 C124 178 128 175 128 170 L128 145 C128 138 124 134 118 134 C112 134 105 138 100 145 Z" 
+        fill="url(#toothGradientDark)"/>
+  
+  <!-- Sparkle effects -->
+  <circle cx="70" cy="70" r="4" fill="white" opacity="0.9"/>
+  <circle cx="82" cy="78" r="3" fill="white" opacity="0.8"/>
+  <circle cx="94" cy="85" r="2.5" fill="white" opacity="0.85"/>
+  <circle cx="106" cy="85" r="2.5" fill="white" opacity="0.85"/>
+  <circle cx="118" cy="78" r="3" fill="white" opacity="0.8"/>
+  <circle cx="130" cy="70" r="4" fill="white" opacity="0.9"/>
+</svg>
