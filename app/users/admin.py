@@ -15,6 +15,7 @@ class UserAdmin(BaseUserAdmin, ModelAdmin, ImagePreviewListDisplayMixin):
 
     list_display = [
         "user_info_display",
+        "profile_type_badge",
         "status_badge",
         "role_display",
     ]
@@ -22,6 +23,7 @@ class UserAdmin(BaseUserAdmin, ModelAdmin, ImagePreviewListDisplayMixin):
         "is_active",
         "is_staff",
         "is_superuser",
+        "profile_type",
         "date_joined",
         "gender",
     ]
@@ -33,6 +35,12 @@ class UserAdmin(BaseUserAdmin, ModelAdmin, ImagePreviewListDisplayMixin):
         (
             "Personal Information",
             {"fields": ("email", "password", "first_name", "last_name")},
+        ),
+        (
+            "Tipo de Perfil",
+            {
+                "fields": ("profile_type",),
+            },
         ),
         (
             "Optional Details",
@@ -84,6 +92,23 @@ class UserAdmin(BaseUserAdmin, ModelAdmin, ImagePreviewListDisplayMixin):
             },
         ),
     )
+
+    @display(description=_("Perfil"))
+    def profile_type_badge(self, obj):
+        colors = {
+            "developer": "#8b5cf6",
+            "admin": "#3b82f6",
+            "client": "#6b7280",
+        }
+        color = colors.get(obj.profile_type, "#9ca3af")
+        label = obj.get_profile_type_display() or obj.profile_type or "-"
+        return format_html(
+            '<span style="background-color: {}; color: white; padding: 4px 12px; '
+            "border-radius: 12px; font-size: 11px; font-weight: 600; "
+            'text-transform: uppercase; display: inline-block;">{}</span>',
+            color,
+            label,
+        )
 
     @display(description=_("User"))
     def user_info_display(self, obj):

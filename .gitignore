@@ -10,6 +10,7 @@ __pycache__/
 *.so
 *.egg
 *.egg-info/
+*.sfdx/*
 dist/
 build/
 eggs/

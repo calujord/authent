@@ -47,6 +47,12 @@ class User(AbstractBaseUser, PermissionsMixin):
         ("P", "Prefer not to say"),
     ]
 
+    PROFILE_TYPE_CHOICES = [
+        ("developer", "Desarrollador"),
+        ("client", "Cliente"),
+        ("admin", "Administrador"),
+    ]
+
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -92,6 +98,15 @@ class User(AbstractBaseUser, PermissionsMixin):
         "Gender", max_length=1, choices=GENDER_CHOICES, blank=True
     )
     avatar = models.ImageField("Avatar", upload_to="avatars/", blank=True, null=True)
+
+    # Tipo de perfil — determina el acceso a los servicios del ecosistema
+    profile_type = models.CharField(
+        "Tipo de perfil",
+        max_length=20,
+        choices=PROFILE_TYPE_CHOICES,
+        default="client",
+        blank=True,
+    )
 
     # System fields
     is_active = models.BooleanField("Active", default=True)
