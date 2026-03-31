@@ -1,6 +1,9 @@
 # Environment variables
+# Solo ignorar el .env raíz (contiene secretos reales)
 .env
+# Ignorar *.env globalmente pero permitir los archivos de config base de envs/
 *.env
+!app/envs/*.env
 !.env.example
 
 # Python
