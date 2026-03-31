@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import filters, status, viewsets
@@ -14,10 +15,7 @@ from .serializers import (
     LocationListSerializer,
     LocationSerializer,
 )
-from .serializers.notification import (
-    NotificationListSerializer,
-    NotificationSerializer,
-)
+from .serializers.notification import NotificationListSerializer, NotificationSerializer
 
 
 @extend_schema_view(
@@ -186,3 +184,6 @@ class NotificationViewSet(viewsets.ReadOnlyModelViewSet):
         return Response(serializer.data)
 
 
+def home_view(request):
+    """Página principal de la Authentication API de Atharix."""
+    return render(request, "home.html")

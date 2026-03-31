@@ -1,0 +1,774 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Atharix — Authentication API</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    {% load static %}
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --teal-300: #5dd3c0;
+        --teal-400: #2dd4bf;
+        --teal-500: #14b8a6;
+        --teal-600: #0d9488;
+        --teal-700: #0f766e;
+        --slate-900: #0f172a;
+        --slate-800: #1e293b;
+        --slate-700: #334155;
+        --slate-600: #475569;
+        --slate-400: #94a3b8;
+        --slate-300: #cbd5e1;
+        --slate-200: #e2e8f0;
+        --white: #ffffff;
+      }
+
+      html,
+      body {
+        min-height: 100vh;
+        font-family: "Inter", system-ui, sans-serif;
+        background-color: var(--slate-900);
+        color: var(--slate-200);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* ── BACKGROUND GLOW ─────────────────────────── */
+      body {
+        background-image:
+          radial-gradient(
+            ellipse 80% 50% at 50% -10%,
+            rgba(20, 184, 166, 0.28) 0%,
+            transparent 65%
+          ),
+          radial-gradient(
+            ellipse 40% 30% at 80% 80%,
+            rgba(13, 148, 136, 0.14) 0%,
+            transparent 60%
+          );
+      }
+
+      /* ── LAYOUT ──────────────────────────────────── */
+      .page-wrapper {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      /* ── NAVBAR ──────────────────────────────────── */
+      .navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 48px;
+        border-bottom: 1px solid rgba(93, 211, 192, 0.12);
+        backdrop-filter: blur(8px);
+        background: rgba(15, 23, 42, 0.7);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .navbar-logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+      }
+
+      .navbar-logo img {
+        height: 32px;
+        width: auto;
+      }
+
+      .navbar-badge {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--teal-400);
+        background: rgba(20, 184, 166, 0.12);
+        border: 1px solid rgba(20, 184, 166, 0.25);
+        border-radius: 99px;
+        padding: 3px 10px;
+      }
+
+      .navbar-links {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .nav-link {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--slate-400);
+        text-decoration: none;
+        padding: 7px 14px;
+        border-radius: 8px;
+        transition:
+          color 0.2s,
+          background 0.2s;
+      }
+
+      .nav-link:hover {
+        color: var(--slate-200);
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      .nav-link-primary {
+        color: var(--teal-300);
+        background: rgba(20, 184, 166, 0.1);
+        border: 1px solid rgba(20, 184, 166, 0.2);
+      }
+
+      .nav-link-primary:hover {
+        color: var(--white);
+        background: rgba(20, 184, 166, 0.18);
+      }
+
+      /* ── HERO ────────────────────────────────────── */
+      .hero {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 80px 24px 60px;
+      }
+
+      .hero-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--teal-400);
+        background: rgba(20, 184, 166, 0.1);
+        border: 1px solid rgba(20, 184, 166, 0.2);
+        border-radius: 99px;
+        padding: 6px 16px;
+        margin-bottom: 32px;
+      }
+
+      .hero-eyebrow-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--teal-400);
+        animation: pulse-dot 2s infinite;
+      }
+
+      @keyframes pulse-dot {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.5;
+          transform: scale(0.8);
+        }
+      }
+
+      .hero-logo {
+        margin-bottom: 28px;
+      }
+
+      .hero-logo img {
+        height: 56px;
+        width: auto;
+      }
+
+      .hero-title {
+        font-size: clamp(36px, 6vw, 64px);
+        font-weight: 800;
+        line-height: 1.08;
+        letter-spacing: -0.03em;
+        color: var(--white);
+        margin-bottom: 20px;
+      }
+
+      .hero-title span {
+        background: linear-gradient(
+          135deg,
+          var(--teal-300) 0%,
+          var(--teal-500) 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .hero-subtitle {
+        font-size: clamp(16px, 2vw, 20px);
+        font-weight: 400;
+        color: var(--slate-400);
+        max-width: 560px;
+        line-height: 1.65;
+        margin-bottom: 44px;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        justify-content: center;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 26px;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s;
+        cursor: pointer;
+      }
+
+      .btn-primary {
+        background: linear-gradient(
+          135deg,
+          var(--teal-500) 0%,
+          var(--teal-600) 100%
+        );
+        color: var(--white);
+        box-shadow: 0 4px 24px rgba(20, 184, 166, 0.35);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 32px rgba(20, 184, 166, 0.45);
+      }
+
+      .btn-secondary {
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--slate-300);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--white);
+        transform: translateY(-1px);
+      }
+
+      /* ── DIVIDER ─────────────────────────────────── */
+      .section-divider {
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(93, 211, 192, 0.2) 50%,
+          transparent
+        );
+        margin: 0 48px;
+      }
+
+      /* ── FEATURES ────────────────────────────────── */
+      .features {
+        padding: 72px 48px;
+        max-width: 1100px;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      .section-label {
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--teal-400);
+        text-align: center;
+        margin-bottom: 14px;
+      }
+
+      .section-title {
+        font-size: clamp(24px, 3vw, 36px);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: var(--white);
+        text-align: center;
+        margin-bottom: 10px;
+      }
+
+      .section-subtitle {
+        font-size: 16px;
+        color: var(--slate-400);
+        text-align: center;
+        margin-bottom: 52px;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+      }
+
+      .feature-card {
+        background: rgba(30, 41, 59, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 16px;
+        padding: 28px;
+        transition:
+          border-color 0.25s,
+          transform 0.25s,
+          box-shadow 0.25s;
+      }
+
+      .feature-card:hover {
+        border-color: rgba(93, 211, 192, 0.25);
+        transform: translateY(-3px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+      }
+
+      .feature-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        background: rgba(20, 184, 166, 0.12);
+        border: 1px solid rgba(20, 184, 166, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 16px;
+        font-size: 20px;
+      }
+
+      .feature-name {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--slate-200);
+        margin-bottom: 8px;
+      }
+
+      .feature-desc {
+        font-size: 13px;
+        color: var(--slate-400);
+        line-height: 1.6;
+      }
+
+      /* ── ENDPOINTS ───────────────────────────────── */
+      .endpoints {
+        padding: 0 48px 72px;
+        max-width: 1100px;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      .endpoints-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 12px;
+      }
+
+      .endpoint-row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        background: rgba(15, 23, 42, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 12px;
+        padding: 14px 18px;
+        transition: border-color 0.2s;
+      }
+
+      .endpoint-row:hover {
+        border-color: rgba(93, 211, 192, 0.2);
+      }
+
+      .method-badge {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        border-radius: 6px;
+        padding: 3px 8px;
+        min-width: 48px;
+        text-align: center;
+        flex-shrink: 0;
+      }
+
+      .method-get {
+        background: rgba(59, 130, 246, 0.15);
+        color: #93c5fd;
+        border: 1px solid rgba(59, 130, 246, 0.25);
+      }
+      .method-post {
+        background: rgba(20, 184, 166, 0.15);
+        color: #5dd3c0;
+        border: 1px solid rgba(20, 184, 166, 0.25);
+      }
+
+      .endpoint-path {
+        font-size: 13px;
+        font-family: "Menlo", "Consolas", "Monaco", monospace;
+        color: var(--slate-300);
+        flex: 1;
+      }
+
+      .endpoint-desc {
+        font-size: 12px;
+        color: var(--slate-600);
+      }
+
+      /* ── STATUS STRIP ────────────────────────────── */
+      .status-strip {
+        margin: 0 48px 72px;
+        background: rgba(20, 184, 166, 0.07);
+        border: 1px solid rgba(20, 184, 166, 0.15);
+        border-radius: 14px;
+        padding: 20px 28px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 16px;
+        max-width: 1004px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .status-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #4ade80;
+        box-shadow: 0 0 8px #4ade80;
+        animation: pulse-dot 2.5s infinite;
+      }
+
+      .status-label {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--slate-300);
+      }
+
+      .status-version {
+        font-size: 12px;
+        color: var(--slate-500);
+        font-family: monospace;
+      }
+
+      /* ── FOOTER ──────────────────────────────────── */
+      .footer {
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        padding: 24px 48px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .footer-text {
+        font-size: 13px;
+        color: var(--slate-600);
+      }
+
+      .footer-text a {
+        color: var(--teal-400);
+        text-decoration: none;
+      }
+
+      .footer-text a:hover {
+        text-decoration: underline;
+      }
+
+      /* ── RESPONSIVE ──────────────────────────────── */
+      @media (max-width: 640px) {
+        .navbar {
+          padding: 16px 20px;
+        }
+        .navbar-links {
+          display: none;
+        }
+        .hero {
+          padding: 60px 20px 40px;
+        }
+        .features,
+        .endpoints {
+          padding-left: 20px;
+          padding-right: 20px;
+        }
+        .status-strip {
+          margin-left: 20px;
+          margin-right: 20px;
+        }
+        .footer {
+          padding: 20px;
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .section-divider {
+          margin: 0 20px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="page-wrapper">
+      <!-- ── NAVBAR ─────────────────────────────── -->
+      <nav class="navbar">
+        <a class="navbar-logo" href="/">
+          <img src="{% static 'img/atharix-logo.svg' %}" alt="Atharix" />
+          <span class="navbar-badge">Auth API</span>
+        </a>
+        <div class="navbar-links">
+          <a href="/health/" class="nav-link">Health</a>
+          <a href="/api/docs/" class="nav-link">Swagger</a>
+          <a href="/api/redoc/" class="nav-link">ReDoc</a>
+          <a href="/admin/" class="nav-link nav-link-primary">Admin &rarr;</a>
+        </div>
+      </nav>
+
+      <!-- ── HERO ───────────────────────────────── -->
+      <section class="hero">
+        <div class="hero-eyebrow">
+          <span class="hero-eyebrow-dot"></span>
+          API operativa
+        </div>
+
+        <div class="hero-logo">
+          <img src="{% static 'img/atharix-logo.svg' %}" alt="Atharix" />
+        </div>
+
+        <h1 class="hero-title">Authentication<br /><span>Platform</span></h1>
+        <p class="hero-subtitle">
+          API segura de autenticación y gestión de usuarios basada en JWT.
+          Diseñada para escalar con tus aplicaciones.
+        </p>
+
+        <div class="hero-actions">
+          <a href="/api/docs/" class="btn btn-primary">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+              />
+              <polyline points="14 2 14 8 20 8" />
+            </svg>
+            Ver documentación
+          </a>
+          <a href="/api/redoc/" class="btn btn-secondary">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 16v-4M12 8h.01" />
+            </svg>
+            ReDoc
+          </a>
+          <a href="/health/" class="btn btn-secondary">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+            </svg>
+            Health check
+          </a>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- ── FEATURES ───────────────────────────── -->
+      <section class="features">
+        <p class="section-label">Capacidades</p>
+        <h2 class="section-title">Todo lo que necesitas para autenticar</h2>
+        <p class="section-subtitle">
+          Construido sobre Django REST Framework con JWT y soporte multi-tenant.
+        </p>
+
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">🔐</div>
+            <div class="feature-name">JWT Seguro</div>
+            <div class="feature-desc">
+              Autenticación basada en tokens JWT con refresh automático y
+              blacklist de tokens revocados.
+            </div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">👥</div>
+            <div class="feature-name">Gestión de usuarios</div>
+            <div class="feature-desc">
+              Registro, login, recuperación de contraseña, invitaciones y roles
+              por aplicación.
+            </div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🏢</div>
+            <div class="feature-name">Multi-tenant</div>
+            <div class="feature-desc">
+              Soporte para múltiples aplicaciones con API keys independientes y
+              aislamiento de datos.
+            </div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📧</div>
+            <div class="feature-name">Email integrado</div>
+            <div class="feature-desc">
+              Envío de correos para verificación, invitaciones y notificaciones
+              vía Resend.
+            </div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <div class="feature-name">Tareas asíncronas</div>
+            <div class="feature-desc">
+              Celery + Redis para procesar tareas en segundo plano sin bloquear
+              las respuestas.
+            </div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📖</div>
+            <div class="feature-name">API documentada</div>
+            <div class="feature-desc">
+              Esquema OpenAPI 3.0 generado automáticamente con Swagger UI y
+              ReDoc integrados.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- ── ENDPOINTS ──────────────────────────── -->
+      <section class="endpoints" style="padding-top: 72px">
+        <p class="section-label">Referencia rápida</p>
+        <h2 class="section-title">Endpoints principales</h2>
+        <p class="section-subtitle">
+          Consulta la documentación completa en
+          <a
+            href="/api/docs/"
+            style="color: var(--teal-400); text-decoration: none"
+            >/api/docs/</a
+          >
+        </p>
+
+        <div class="endpoints-grid">
+          <div class="endpoint-row">
+            <span class="method-badge method-post">POST</span>
+            <span class="endpoint-path">/api/auth/login/</span>
+            <span class="endpoint-desc">Obtener tokens JWT</span>
+          </div>
+          <div class="endpoint-row">
+            <span class="method-badge method-post">POST</span>
+            <span class="endpoint-path">/api/auth/register/</span>
+            <span class="endpoint-desc">Crear cuenta</span>
+          </div>
+          <div class="endpoint-row">
+            <span class="method-badge method-post">POST</span>
+            <span class="endpoint-path">/api/auth/token/refresh/</span>
+            <span class="endpoint-desc">Renovar access token</span>
+          </div>
+          <div class="endpoint-row">
+            <span class="method-badge method-post">POST</span>
+            <span class="endpoint-path">/api/auth/logout/</span>
+            <span class="endpoint-desc">Revocar token</span>
+          </div>
+          <div class="endpoint-row">
+            <span class="method-badge method-get">GET</span>
+            <span class="endpoint-path">/api/auth/profile/</span>
+            <span class="endpoint-desc">Perfil del usuario</span>
+          </div>
+          <div class="endpoint-row">
+            <span class="method-badge method-post">POST</span>
+            <span class="endpoint-path">/api/auth/password/reset/</span>
+            <span class="endpoint-desc">Recuperar contraseña</span>
+          </div>
+          <div class="endpoint-row">
+            <span class="method-badge method-get">GET</span>
+            <span class="endpoint-path">/api/schema/</span>
+            <span class="endpoint-desc">OpenAPI schema</span>
+          </div>
+          <div class="endpoint-row">
+            <span class="method-badge method-get">GET</span>
+            <span class="endpoint-path">/health/</span>
+            <span class="endpoint-desc">Estado del servicio</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── STATUS ─────────────────────────────── -->
+      <div class="status-strip" style="margin-bottom: 64px">
+        <div class="status-item">
+          <span class="status-dot"></span>
+          <span class="status-label">Todos los sistemas operativos</span>
+        </div>
+        <div class="status-item">
+          <span class="status-version"
+            >Django REST Framework · JWT · Celery</span
+          >
+        </div>
+        <div class="status-item">
+          <a
+            href="/health/"
+            class="nav-link nav-link-primary"
+            style="font-size: 12px; padding: 6px 14px"
+            >Ver estado &rarr;</a
+          >
+        </div>
+      </div>
+
+      <!-- ── FOOTER ─────────────────────────────── -->
+      <footer class="footer">
+        <span class="footer-text">
+          &copy; 2026 <a href="#">Atharix</a> — Authentication Platform
+        </span>
+        <span class="footer-text">
+          <a href="/api/docs/">Swagger</a> &middot;
+          <a href="/api/redoc/">ReDoc</a> &middot;
+          <a href="/admin/">Admin</a>
+        </span>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,4 +1,5 @@
 from core.health import health_check, live_check, ready_check
+from core.views import home_view
 from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
@@ -9,6 +10,7 @@ from drf_spectacular.views import (
 )
 
 urlpatterns = [
+    path("", home_view, name="home"),
     path("admin/", admin.site.urls),
     # Health checks
     path("health/", health_check, name="health"),
