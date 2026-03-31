@@ -43,3 +43,6 @@ whitenoise>=6.7
 # Development
 ruff>=0.9
 
+
+# GIS / Geo
+djangorestframework-gis>=1.0
